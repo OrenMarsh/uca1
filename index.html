@@ -3,46 +3,62 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Stipple Studio</title>
+    <title>Stipple Studio - Typewriter Edition</title>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Font Awesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Google Font Inter -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Google Fonts for Vintage Typewriter Aesthetic -->
+    <link href="https://fonts.googleapis.com/css2?family=Courier+Prime:ital,wght@0,400;0,700;1,400&family=Special+Elite&family=Playfair+Display:ital,wght@0,600;1,400&display=swap" rel="stylesheet">
     
     <style>
         body {
-            font-family: 'Inter', sans-serif;
-            background-color: #1a1a1a;
-            color: #E0E0E0;
+            font-family: 'Courier Prime', monospace;
+            background-color: #fafafa;
+            color: #111111;
             overflow: hidden;
         }
 
-        /* Dark glossy pill button styling matching reference image */
+        /* Abstract Monochrome Grid & Paper Texture */
+        .typewriter-paper {
+            background-color: #ffffff;
+            background-image: 
+                linear-gradient(to right, rgba(0, 0, 0, 0.04) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(0, 0, 0, 0.04) 1px, transparent 1px);
+            background-size: 24px 24px;
+            border-right: 2px solid #000000;
+        }
+
+        .typewriter-title {
+            font-family: 'Special Elite', cursive;
+            letter-spacing: 0.1em;
+        }
+
+        /* Abstract Mechanical Key Buttons (Black & White Stark Theme) */
         .pill-btn {
-            background: linear-gradient(180deg, #4d4d4d 0%, #2f2f2f 100%);
-            border: 1px solid rgba(255, 255, 255, 0.22);
-            box-shadow: 0 4px 10px -1px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.35);
-            transition: all 0.2s ease;
-            border-radius: 9999px;
-            color: #ffffff;
-            font-weight: 500;
+            background: #ffffff;
+            border: 2px solid #000000;
+            box-shadow: 4px 4px 0px #000000;
+            transition: all 0.12s cubic-bezier(0.2, 0.8, 0.2, 1);
+            border-radius: 4px;
+            color: #000000;
+            font-family: 'Special Elite', monospace;
+            font-weight: 700;
         }
 
         .pill-btn:hover {
-            background: linear-gradient(180deg, #5d5d5d 0%, #3a3a3a 100%);
-            border-color: rgba(255, 255, 255, 0.4);
-            box-shadow: 0 6px 14px -2px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.45);
+            background: #000000;
+            color: #ffffff;
+            box-shadow: 6px 6px 0px rgba(0,0,0,0.25);
+            transform: translate(-2px, -2px);
         }
 
         .pill-btn:active {
-            background: linear-gradient(180deg, #222222 0%, #3d3d3d 100%);
-            border-color: rgba(255, 255, 255, 0.5);
-            box-shadow: inset 0 2px 4px rgba(0,0,0,0.8);
+            transform: translate(2px, 2px);
+            box-shadow: 1px 1px 0px #000000;
         }
 
-        /* Custom Dark Glossy Range Sliders matching reference image */
+        /* Abstract Rail Sliders */
         input[type=range] {
             -webkit-appearance: none;
             width: 100%;
@@ -53,214 +69,236 @@
             outline: none;
         }
 
-        /* Track */
         input[type=range]::-webkit-slider-runnable-track {
             width: 100%;
-            height: 12px;
+            height: 4px;
             cursor: pointer;
-            background: linear-gradient(180deg, #222222 0%, #383838 100%);
-            border-radius: 9999px;
-            border: 1px solid rgba(255, 255, 255, 0.18);
-            box-shadow: inset 0 2px 5px rgba(0,0,0,0.7);
+            background: #e0e0e0;
+            border-radius: 0px;
+            border: 1px solid #000000;
         }
 
         input[type=range]::-moz-range-track {
             width: 100%;
-            height: 12px;
+            height: 4px;
             cursor: pointer;
-            background: linear-gradient(180deg, #222222 0%, #383838 100%);
-            border-radius: 9999px;
-            border: 1px solid rgba(255, 255, 255, 0.18);
-            box-shadow: inset 0 2px 5px rgba(0,0,0,0.7);
+            background: #e0e0e0;
+            border-radius: 0px;
+            border: 1px solid #000000;
         }
 
-        /* Thumb */
+        /* High contrast square slider thumb */
         input[type=range]::-webkit-slider-thumb {
-            height: 20px;
-            width: 20px;
-            border-radius: 50%;
-            background: radial-gradient(circle at 35% 35%, #ffffff 0%, #d8d8d8 50%, #a0a0a0 100%);
+            height: 18px;
+            width: 12px;
+            border-radius: 1px;
+            background: #000000;
             cursor: pointer;
             -webkit-appearance: none;
-            margin-top: -4px;
-            box-shadow: 0 3px 8px rgba(0,0,0,0.7), inset 0 1px 0 rgba(255,255,255,0.9);
-            border: 1px solid rgba(0,0,0,0.4);
-            transition: transform 0.1s ease;
+            margin-top: -7px;
+            border: 1px solid #000000;
+            box-shadow: 2px 2px 0px rgba(0,0,0,0.2);
+            transition: all 0.1s ease;
         }
 
         input[type=range]::-moz-range-thumb {
-            height: 20px;
-            width: 20px;
-            border-radius: 50%;
-            background: radial-gradient(circle at 35% 35%, #ffffff 0%, #d8d8d8 50%, #a0a0a0 100%);
+            height: 18px;
+            width: 12px;
+            border-radius: 1px;
+            background: #000000;
             cursor: pointer;
-            box-shadow: 0 3px 8px rgba(0,0,0,0.7), inset 0 1px 0 rgba(255,255,255,0.9);
-            border: 1px solid rgba(0,0,0,0.4);
-            transition: transform 0.1s ease;
+            border: 1px solid #000000;
+            box-shadow: 2px 2px 0px rgba(0,0,0,0.2);
+            transition: all 0.1s ease;
         }
 
         input[type=range]:active::-webkit-slider-thumb {
+            background: #333333;
             transform: scale(1.15);
         }
 
         /* Scrollbars */
         ::-webkit-scrollbar {
-            width: 5px;
-            height: 5px;
+            width: 6px;
+            height: 6px;
         }
         ::-webkit-scrollbar-track {
-            background: #1c1c1c;
+            background: #ffffff;
+            border-left: 1px solid #e0e0e0;
         }
         ::-webkit-scrollbar-thumb {
-            background: #3a3a3a;
-            border-radius: 4px;
+            background: #000000;
         }
         ::-webkit-scrollbar-thumb:hover {
-            background: #555;
+            background: #444444;
         }
 
-        /* Script Watermark Vector Graphic overlay (matching reference image) */
+        /* Abstract SVG Watermark Pattern */
         .watermark-svg {
             position: absolute;
             bottom: -30px;
-            left: -40px;
-            width: 360px;
-            opacity: 0.12;
+            left: -30px;
+            width: 340px;
+            opacity: 0.06;
             pointer-events: none;
             z-index: 0;
             user-select: none;
         }
 
-        /* Canvas background grid */
+        /* White Minimal Canvas Surface */
         .canvas-bg {
-            background-color: #121212;
+            background-color: #f4f4f4;
             background-image: 
-                radial-gradient(#262626 1px, transparent 1px),
-                radial-gradient(#262626 1px, #121212 1px);
-            background-size: 24px 24px;
-            background-position: 0 0, 12px 12px;
+                radial-gradient(#000000 0.75px, transparent 0.75px),
+                radial-gradient(#000000 0.75px, #f4f4f4 0.75px);
+            background-size: 30px 30px;
+            background-position: 0 0, 15px 15px;
         }
 
         .modal-blur {
             backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
         }
 
         .tab-btn {
             transition: all 0.2s ease;
             border-bottom: 2px solid transparent;
+            color: #777777;
+            font-family: 'Special Elite', monospace;
+        }
+        .tab-btn:hover {
+            color: #000000;
         }
         .tab-btn.active {
-            color: #ffffff;
-            border-color: #ffffff;
-            background: rgba(255,255,255,0.06);
+            color: #000000;
+            border-color: #000000;
+            background: #f0f0f0;
+            font-weight: bold;
         }
     </style>
 </head>
 <body class="h-screen w-screen flex flex-col md:flex-row overflow-hidden select-none">
 
-    <!-- LEFT SIDEBAR PANEL (Matching Dark UI Mockup) -->
-    <aside class="w-full md:w-[360px] lg:w-[380px] bg-[#2a2a2a] text-white flex flex-col justify-between relative z-10 shrink-0 border-r border-[#3a3a3a] shadow-2xl h-full overflow-hidden">
+    <!-- LEFT SIDEBAR PANEL (Abstract Black & White Studio) -->
+    <aside class="w-full md:w-[360px] lg:w-[380px] typewriter-paper text-[#111111] flex flex-col justify-between relative z-10 shrink-0 shadow-2xl h-full overflow-hidden">
         
         <!-- Top Section Controls -->
         <div class="flex flex-col p-6 pb-3 relative z-10 space-y-4">
             
+            <!-- Branding Header -->
+            <div class="flex items-center justify-between border-b-2 border-black pb-3">
+                <div class="flex items-center gap-3">
+                    <div class="w-8 h-8 rounded-none bg-black text-white border border-black flex items-center justify-center shadow">
+                        <i class="fa-solid fa-shapes text-xs"></i>
+                    </div>
+                    <div>
+                        <span class="typewriter-title font-bold text-base tracking-widest text-black">STIPPLE</span>
+                        <span class="text-[10px] font-mono text-gray-500 block tracking-widest -mt-1">ABSTRACT STUDIO</span>
+                    </div>
+                </div>
+                <span class="text-[10px] font-mono tracking-widest px-2 py-0.5 rounded-none bg-black text-white">MONO</span>
+            </div>
+
             <!-- Main Upload Button -->
-            <div class="w-full">
+            <div class="w-full pt-1">
                 <input type="file" id="imageInput" accept="image/*" class="hidden">
                 <button onclick="document.getElementById('imageInput').click()" 
-                        class="pill-btn w-full py-3 px-6 text-center text-sm font-medium tracking-wide flex items-center justify-center gap-2">
-                    <i class="fa-solid fa-cloud-arrow-up text-xs opacity-80"></i>
-                    Upload
+                        class="pill-btn w-full py-3 px-6 text-center text-xs tracking-widest uppercase font-bold flex items-center justify-center gap-2.5">
+                    <i class="fa-solid fa-arrow-up-from-bracket text-sm"></i>
+                    Load Document
                 </button>
             </div>
 
-            <!-- Tab Navigation for Extended Controls -->
-            <div class="flex border-b border-[#3e3e3e] text-xs text-gray-400 overflow-x-auto no-scrollbar gap-1 pt-1">
+            <!-- Tab Navigation -->
+            <div class="flex border-b-2 border-black text-xs text-gray-500 overflow-x-auto no-scrollbar gap-1 pt-1">
                 <button onclick="switchTab('stipple')" id="tab-stipple" class="tab-btn active px-3 py-2 whitespace-nowrap font-medium flex items-center gap-1.5">
                     <i class="fa-solid fa-circle-dot text-[10px]"></i> Stipple
                 </button>
                 <button onclick="switchTab('color')" id="tab-color" class="tab-btn px-3 py-2 whitespace-nowrap font-medium flex items-center gap-1.5">
-                    <i class="fa-solid fa-sliders text-[10px]"></i> Color
+                    <i class="fa-solid fa-sliders text-[10px]"></i> Tone
+                </button>
+                <button onclick="switchTab('text')" id="tab-text" class="tab-btn px-3 py-2 whitespace-nowrap font-medium flex items-center gap-1.5">
+                    <i class="fa-solid fa-font text-[10px]"></i> Type
                 </button>
                 <button onclick="switchTab('artistic')" id="tab-artistic" class="tab-btn px-3 py-2 whitespace-nowrap font-medium flex items-center gap-1.5">
-                    <i class="fa-solid fa-wand-magic-sparkles text-[10px]"></i> FX
+                    <i class="fa-solid fa-wand-magic-sparkles text-[10px]"></i> Ink FX
                 </button>
                 <button onclick="switchTab('transform')" id="tab-transform" class="tab-btn px-3 py-2 whitespace-nowrap font-medium flex items-center gap-1.5">
                     <i class="fa-solid fa-crop-simple text-[10px]"></i> Crop
                 </button>
                 <button onclick="switchTab('presets')" id="tab-presets" class="tab-btn px-3 py-2 whitespace-nowrap font-medium flex items-center gap-1.5">
-                    <i class="fa-solid fa-palette text-[10px]"></i> Presets
+                    <i class="fa-solid fa-palette text-[10px]"></i> Styles
                 </button>
             </div>
         </div>
 
-        <!-- Scrollable Sliders & Settings Container -->
+        <!-- Scrollable Controls Container -->
         <div class="flex-1 overflow-y-auto px-6 py-2 space-y-5 relative z-10">
             
-            <!-- TAB 1: STIPPLE & HALFTONE (Matches Main UI Reference) -->
+            <!-- TAB 1: STIPPLE & HALFTONE -->
             <div id="panel-stipple" class="space-y-4">
                 
                 <!-- Size Slider -->
                 <div class="flex flex-col space-y-1.5">
-                    <div class="flex justify-between items-center text-xs font-light text-gray-300">
-                        <label for="sizeSlider">Size</label>
-                        <span id="sizeVal" class="text-[11px] text-gray-400 font-mono">6.0</span>
+                    <div class="flex justify-between items-center text-xs font-mono text-black font-semibold">
+                        <label for="sizeSlider">Dot Gauge</label>
+                        <span id="sizeVal" class="text-[11px] text-gray-600">6.0</span>
                     </div>
                     <input type="range" id="sizeSlider" min="2" max="32" step="0.5" value="6">
                 </div>
 
                 <!-- Contrast Slider -->
                 <div class="flex flex-col space-y-1.5">
-                    <div class="flex justify-between items-center text-xs font-light text-gray-300">
-                        <label for="contrastSlider">Contrast</label>
-                        <span id="contrastVal" class="text-[11px] text-gray-400 font-mono">1.2</span>
+                    <div class="flex justify-between items-center text-xs font-mono text-black font-semibold">
+                        <label for="contrastSlider">Ink Contrast</label>
+                        <span id="contrastVal" class="text-[11px] text-gray-600">1.2</span>
                     </div>
                     <input type="range" id="contrastSlider" min="0.2" max="3.0" step="0.1" value="1.2">
                 </div>
 
                 <!-- Stippling Density Slider -->
                 <div class="flex flex-col space-y-1.5">
-                    <div class="flex justify-between items-center text-xs font-light text-gray-300">
-                        <label for="stipplingSlider">Stippling</label>
-                        <span id="stipplingVal" class="text-[11px] text-gray-400 font-mono">75%</span>
+                    <div class="flex justify-between items-center text-xs font-mono text-black font-semibold">
+                        <label for="stipplingSlider">Stipple Density</label>
+                        <span id="stipplingVal" class="text-[11px] text-gray-600">75%</span>
                     </div>
                     <input type="range" id="stipplingSlider" min="10" max="100" step="1" value="75">
                 </div>
 
                 <!-- Jitter / Randomness Noise Slider -->
                 <div class="flex flex-col space-y-1.5 pt-1">
-                    <div class="flex justify-between items-center text-xs font-light text-gray-300">
-                        <label for="noiseSlider">Random Jitter</label>
-                        <span id="noiseVal" class="text-[11px] text-gray-400 font-mono">15%</span>
+                    <div class="flex justify-between items-center text-xs font-mono text-black font-semibold">
+                        <label for="noiseSlider">Type Bleed / Noise</label>
+                        <span id="noiseVal" class="text-[11px] text-gray-600">15%</span>
                     </div>
                     <input type="range" id="noiseSlider" min="0" max="100" step="1" value="15">
                 </div>
 
                 <!-- Dot Shape Selectors -->
-                <div class="flex justify-between items-center pt-2 border-t border-[#3e3e3e]">
-                    <span class="text-xs text-gray-300 font-light">Dot Shape</span>
+                <div class="flex justify-between items-center pt-2 border-t border-black">
+                    <span class="text-xs font-mono text-black font-semibold">Impression</span>
                     <div class="flex gap-1.5">
-                        <button onclick="setDotShape('circle')" id="shapeCircle" class="py-1 px-2.5 text-[10px] rounded-full bg-[#4a4a4a] border border-gray-400 text-white">Circle</button>
-                        <button onclick="setDotShape('square')" id="shapeSquare" class="py-1 px-2.5 text-[10px] rounded-full bg-[#202020] border border-transparent text-gray-400">Square</button>
-                        <button onclick="setDotShape('diamond')" id="shapeDiamond" class="py-1 px-2.5 text-[10px] rounded-full bg-[#202020] border border-transparent text-gray-400">Diamond</button>
+                        <button onclick="setDotShape('circle')" id="shapeCircle" class="py-1 px-2.5 text-[10px] font-mono rounded-none bg-black text-white border border-black">Dot</button>
+                        <button onclick="setDotShape('square')" id="shapeSquare" class="py-1 px-2.5 text-[10px] font-mono rounded-none bg-white text-black border border-black">Block</button>
+                        <button onclick="setDotShape('diamond')" id="shapeDiamond" class="py-1 px-2.5 text-[10px] font-mono rounded-none bg-white text-black border border-black">Diamond</button>
                     </div>
                 </div>
 
                 <!-- Mode & Palette Pickers -->
-                <div class="pt-2 flex flex-col space-y-2 border-t border-[#3e3e3e]">
+                <div class="pt-2 flex flex-col space-y-2 border-t border-black">
                     <div class="flex justify-between items-center">
-                        <label class="text-xs text-gray-300 flex items-center gap-2 cursor-pointer font-light">
-                            <input type="checkbox" id="invertColors" class="rounded bg-gray-700 border-gray-600 text-white focus:ring-0">
-                            Invert Colors
+                        <label class="text-xs font-mono text-black font-semibold flex items-center gap-2 cursor-pointer">
+                            <input type="checkbox" id="invertColors" class="rounded-none bg-white border-2 border-black text-black focus:ring-0">
+                            Invert Ribbon
                         </label>
-                        <label class="text-xs text-gray-300 flex items-center gap-2 font-light">
-                            Dot Color:
-                            <input type="color" id="dotColorPicker" value="#ffffff" class="w-5 h-5 rounded cursor-pointer border-0 bg-transparent">
+                        <label class="text-xs font-mono text-black font-semibold flex items-center gap-2">
+                            Ink:
+                            <input type="color" id="dotColorPicker" value="#000000" class="w-5 h-5 rounded-none cursor-pointer border-2 border-black bg-transparent">
                         </label>
                     </div>
                     <div class="flex justify-between items-center">
-                        <span class="text-xs text-gray-300 font-light">Background Color</span>
-                        <input type="color" id="bgColorPicker" value="#121212" class="w-5 h-5 rounded cursor-pointer border-0 bg-transparent">
+                        <span class="text-xs font-mono text-black font-semibold">Paper Tint</span>
+                        <input type="color" id="bgColorPicker" value="#ffffff" class="w-5 h-5 rounded-none cursor-pointer border-2 border-black bg-transparent">
                     </div>
                 </div>
             </div>
@@ -268,147 +306,237 @@
             <!-- TAB 2: COLOR & TONE CONTROLS -->
             <div id="panel-color" class="space-y-4 hidden">
                 <div class="flex flex-col space-y-1.5">
-                    <div class="flex justify-between items-center text-xs font-light text-gray-300">
-                        <label for="brightnessSlider">Brightness</label>
-                        <span id="brightnessVal" class="text-[11px] text-gray-400 font-mono">0</span>
+                    <div class="flex justify-between items-center text-xs font-mono text-black font-semibold">
+                        <label for="brightnessSlider">Exposure</label>
+                        <span id="brightnessVal" class="text-[11px] text-gray-600">0</span>
                     </div>
                     <input type="range" id="brightnessSlider" min="-100" max="100" step="1" value="0">
                 </div>
 
                 <div class="flex flex-col space-y-1.5">
-                    <div class="flex justify-between items-center text-xs font-light text-gray-300">
-                        <label for="saturationSlider">Saturation</label>
-                        <span id="saturationVal" class="text-[11px] text-gray-400 font-mono">1.0</span>
+                    <div class="flex justify-between items-center text-xs font-mono text-black font-semibold">
+                        <label for="saturationSlider">Ribbon Saturation</label>
+                        <span id="saturationVal" class="text-[11px] text-gray-600">1.0</span>
                     </div>
                     <input type="range" id="saturationSlider" min="0" max="3.0" step="0.1" value="1.0">
                 </div>
 
                 <div class="flex flex-col space-y-1.5">
-                    <div class="flex justify-between items-center text-xs font-light text-gray-300">
-                        <label for="hueSlider">Hue Shift</label>
-                        <span id="hueVal" class="text-[11px] text-gray-400 font-mono">0°</span>
+                    <div class="flex justify-between items-center text-xs font-mono text-black font-semibold">
+                        <label for="hueSlider">Ink Chroma</label>
+                        <span id="hueVal" class="text-[11px] text-gray-600">0°</span>
                     </div>
                     <input type="range" id="hueSlider" min="-180" max="180" step="1" value="0">
                 </div>
 
                 <div class="flex flex-col space-y-1.5">
-                    <div class="flex justify-between items-center text-xs font-light text-gray-300">
-                        <label for="vignetteSlider">Vignette</label>
-                        <span id="vignetteVal" class="text-[11px] text-gray-400 font-mono">0%</span>
+                    <div class="flex justify-between items-center text-xs font-mono text-black font-semibold">
+                        <label for="vignetteSlider">Aged Edge (Vignette)</label>
+                        <span id="vignetteVal" class="text-[11px] text-gray-600">0%</span>
                     </div>
                     <input type="range" id="vignetteSlider" min="0" max="100" step="1" value="0">
                 </div>
             </div>
 
-            <!-- TAB 3: ARTISTIC & FX -->
+            <!-- TAB 3: ANIMATED TEXT OVERLAY -->
+            <div id="panel-text" class="space-y-4 hidden">
+                <div class="flex flex-col space-y-1">
+                    <label class="text-xs font-mono text-black font-semibold">Typed Manuscript</label>
+                    <input type="text" id="textInput" value="STIPPLE STUDIO" placeholder="Type text overlay..." class="w-full bg-white border-2 border-black rounded-none p-2.5 text-xs text-black font-mono focus:outline-none">
+                </div>
+
+                <div class="grid grid-cols-2 gap-2">
+                    <div class="flex flex-col space-y-1">
+                        <label class="text-[11px] font-mono text-gray-600">Type Family</label>
+                        <select id="fontSelect" class="bg-white border-2 border-black rounded-none p-1.5 text-xs text-black font-mono focus:outline-none">
+                            <option value="Courier Prime">Courier Prime</option>
+                            <option value="Special Elite">Special Elite</option>
+                            <option value="Courier New">Courier New</option>
+                            <option value="Georgia">Georgia Serif</option>
+                            <option value="Impact">Impact Bold</option>
+                        </select>
+                    </div>
+                    <div class="flex flex-col space-y-1">
+                        <label class="text-[11px] font-mono text-gray-600">Type Movement</label>
+                        <select id="animPresetSelect" class="bg-white border-2 border-black rounded-none p-1.5 text-xs text-black font-mono focus:outline-none">
+                            <option value="typewriter">Typewriter</option>
+                            <option value="neon">Vintage Glow</option>
+                            <option value="bounce">Mechanical Bounce</option>
+                            <option value="glitch">Ribbon Glitch</option>
+                            <option value="wave">Paper Wave</option>
+                            <option value="marquee">Carriage Slide</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="flex flex-col space-y-1.5">
+                    <div class="flex justify-between items-center text-xs font-mono text-black font-semibold">
+                        <label for="fontSizeSlider">Type Size</label>
+                        <span id="fontSizeVal" class="text-[11px] text-gray-600">48px</span>
+                    </div>
+                    <input type="range" id="fontSizeSlider" min="16" max="120" step="2" value="48">
+                </div>
+
+                <div class="flex flex-col space-y-1.5">
+                    <div class="flex justify-between items-center text-xs font-mono text-black font-semibold">
+                        <label for="animSpeedSlider">Carriage Speed</label>
+                        <span id="animSpeedVal" class="text-[11px] text-gray-600">1.0x</span>
+                    </div>
+                    <input type="range" id="animSpeedSlider" min="0.2" max="3.0" step="0.1" value="1.0">
+                </div>
+
+                <div class="grid grid-cols-2 gap-2">
+                    <div class="flex flex-col space-y-1">
+                        <div class="flex justify-between items-center text-[11px] font-mono text-gray-600">
+                            <label>Margin X</label>
+                            <span id="textXVal">50%</span>
+                        </div>
+                        <input type="range" id="textXSlider" min="0" max="100" step="1" value="50">
+                    </div>
+                    <div class="flex flex-col space-y-1">
+                        <div class="flex justify-between items-center text-[11px] font-mono text-gray-600">
+                            <label>Margin Y</label>
+                            <span id="textYVal">50%</span>
+                        </div>
+                        <input type="range" id="textYSlider" min="0" max="100" step="1" value="50">
+                    </div>
+                </div>
+
+                <div class="flex justify-between items-center pt-2 border-t border-black">
+                    <label class="text-xs font-mono text-black font-semibold flex items-center gap-2">
+                        Type Tint
+                        <input type="color" id="textColorPicker" value="#000000" class="w-5 h-5 rounded-none cursor-pointer border-2 border-black bg-transparent">
+                    </label>
+                    <label class="text-xs font-mono text-black font-semibold flex items-center gap-2">
+                        Aura Tint
+                        <input type="color" id="glowColorPicker" value="#888888" class="w-5 h-5 rounded-none cursor-pointer border-2 border-black bg-transparent">
+                    </label>
+                </div>
+
+                <div class="flex gap-2 pt-2 border-t border-black">
+                    <button onclick="toggleTextAnimation()" id="animPlayBtn" class="pill-btn flex-1 py-2 text-xs flex items-center justify-center gap-1.5">
+                        <i class="fa-solid fa-pause text-[10px]" id="animPlayIcon"></i>
+                        <span id="animPlayText">Pause</span>
+                    </button>
+                    <button onclick="exportVideoAnimation()" id="exportVidBtn" class="pill-btn flex-1 py-2 text-xs flex items-center justify-center gap-1.5">
+                        <i class="fa-solid fa-film text-[10px]"></i> Record Reel
+                    </button>
+                </div>
+                <div id="recordingStatus" class="hidden text-center text-[10px] text-black font-mono font-bold animate-pulse">
+                    <i class="fa-solid fa-circle text-[8px] mr-1"></i> Recording 4s WebM Reel...
+                </div>
+            </div>
+
+            <!-- TAB 4: ARTISTIC & FX -->
             <div id="panel-artistic" class="space-y-4 hidden">
                 <div class="flex flex-col space-y-1.5">
-                    <div class="flex justify-between items-center text-xs font-light text-gray-300">
-                        <label for="posterizeSlider">Posterize Levels</label>
-                        <span id="posterizeVal" class="text-[11px] text-gray-400 font-mono">Off</span>
+                    <div class="flex justify-between items-center text-xs font-mono text-black font-semibold">
+                        <label for="posterizeSlider">Ink Tonal Quantize</label>
+                        <span id="posterizeVal" class="text-[11px] text-gray-600">Off</span>
                     </div>
                     <input type="range" id="posterizeSlider" min="2" max="16" step="1" value="16">
                 </div>
 
                 <div class="flex flex-col space-y-1.5">
-                    <div class="flex justify-between items-center text-xs font-light text-gray-300">
-                        <label for="pixelateSlider">Pixelate Factor</label>
-                        <span id="pixelateVal" class="text-[11px] text-gray-400 font-mono">1x</span>
+                    <div class="flex justify-between items-center text-xs font-mono text-black font-semibold">
+                        <label for="pixelateSlider">Coarse Grain</label>
+                        <span id="pixelateVal" class="text-[11px] text-gray-600">1x</span>
                     </div>
                     <input type="range" id="pixelateSlider" min="1" max="20" step="1" value="1">
                 </div>
 
                 <div class="flex flex-col space-y-1.5">
-                    <div class="flex justify-between items-center text-xs font-light text-gray-300">
-                        <label for="blurSlider">Soft Blur</label>
-                        <span id="blurVal" class="text-[11px] text-gray-400 font-mono">0px</span>
+                    <div class="flex justify-between items-center text-xs font-mono text-black font-semibold">
+                        <label for="blurSlider">Soft Lens Blur</label>
+                        <span id="blurVal" class="text-[11px] text-gray-600">0px</span>
                     </div>
                     <input type="range" id="blurSlider" min="0" max="10" step="0.5" value="0">
                 </div>
 
-                <div class="flex justify-between items-center pt-2 border-t border-[#3e3e3e]">
-                    <label class="text-xs text-gray-300 flex items-center gap-2 cursor-pointer font-light">
-                        <input type="checkbox" id="sepiaToggle" class="rounded bg-gray-700 border-gray-600 text-white focus:ring-0">
-                        Sepia Tone Filter
+                <div class="flex justify-between items-center pt-2 border-t border-black">
+                    <label class="text-xs font-mono text-black font-semibold flex items-center gap-2 cursor-pointer">
+                        <input type="checkbox" id="sepiaToggle" class="rounded-none bg-white border-2 border-black text-black focus:ring-0">
+                        Sepia Parchment Wash
                     </label>
                 </div>
             </div>
 
-            <!-- TAB 4: TRANSFORM & CROP -->
+            <!-- TAB 5: TRANSFORM & CROP -->
             <div id="panel-transform" class="space-y-4 hidden">
                 <div class="flex flex-col space-y-1.5">
-                    <div class="flex justify-between items-center text-xs font-light text-gray-300">
-                        <label for="rotationSlider">Rotation Angle</label>
-                        <span id="rotationVal" class="text-[11px] text-gray-400 font-mono">0°</span>
+                    <div class="flex justify-between items-center text-xs font-mono text-black font-semibold">
+                        <label for="rotationSlider">Platen Rotation Angle</label>
+                        <span id="rotationVal" class="text-[11px] text-gray-600">0°</span>
                     </div>
                     <input type="range" id="rotationSlider" min="0" max="360" step="90" value="0">
                 </div>
 
                 <div class="flex gap-2 pt-1">
                     <button onclick="toggleFlip('h')" id="flipHBtn" class="pill-btn flex-1 py-1.5 text-xs flex items-center justify-center gap-1">
-                        <i class="fa-solid fa-arrows-left-right text-[10px]"></i> Flip H
+                        <i class="fa-solid fa-arrows-left-right text-[10px]"></i> Mirror H
                     </button>
                     <button onclick="toggleFlip('v')" id="flipVBtn" class="pill-btn flex-1 py-1.5 text-xs flex items-center justify-center gap-1">
-                        <i class="fa-solid fa-arrows-up-down text-[10px]"></i> Flip V
+                        <i class="fa-solid fa-arrows-up-down text-[10px]"></i> Mirror V
                     </button>
                 </div>
 
-                <div class="flex flex-col space-y-2 pt-2 border-t border-[#3e3e3e]">
-                    <span class="text-xs text-gray-300 font-light">Aspect Ratio Crop</span>
+                <div class="flex flex-col space-y-2 pt-2 border-t border-black">
+                    <span class="text-xs font-mono text-black font-semibold">Paper Cut Ratio</span>
                     <div class="grid grid-cols-3 gap-1.5">
-                        <button onclick="setCropRatio('original')" class="py-1 px-2 text-[10px] rounded bg-[#202020] border border-gray-600 text-gray-300 hover:text-white">Original</button>
-                        <button onclick="setCropRatio('1:1')" class="py-1 px-2 text-[10px] rounded bg-[#202020] border border-gray-600 text-gray-300 hover:text-white">1:1 Square</button>
-                        <button onclick="setCropRatio('16:9')" class="py-1 px-2 text-[10px] rounded bg-[#202020] border border-gray-600 text-gray-300 hover:text-white">16:9 Wide</button>
+                        <button onclick="setCropRatio('original')" class="py-1 px-2 text-[10px] font-mono bg-white border border-black text-black">Original</button>
+                        <button onclick="setCropRatio('1:1')" class="py-1 px-2 text-[10px] font-mono bg-white border border-black text-black">1:1 Square</button>
+                        <button onclick="setCropRatio('16:9')" class="py-1 px-2 text-[10px] font-mono bg-white border border-black text-black">16:9 Sheet</button>
                     </div>
                 </div>
             </div>
 
-            <!-- TAB 5: PRESETS -->
+            <!-- TAB 6: PRESETS -->
             <div id="panel-presets" class="grid grid-cols-2 gap-2.5 hidden">
-                <button onclick="applyPreset('classic')" class="p-2.5 rounded-xl bg-[#202020] hover:bg-[#333] border border-white/5 text-left transition">
-                    <div class="text-xs font-medium text-white mb-0.5">Classic Dot</div>
-                    <div class="text-[10px] text-gray-400">Standard monochrome</div>
+                <button onclick="applyPreset('classic')" class="p-3 bg-white border-2 border-black hover:bg-black hover:text-white text-left transition group">
+                    <div class="text-xs font-bold font-mono mb-0.5">Mono Type</div>
+                    <div class="text-[10px] text-gray-500 group-hover:text-gray-300 font-mono">Classic black ink</div>
                 </button>
-                <button onclick="applyPreset('cyberpunk')" class="p-2.5 rounded-xl bg-[#202020] hover:bg-[#333] border border-white/5 text-left transition">
-                    <div class="text-xs font-medium text-pink-400 mb-0.5">Cyberpunk</div>
-                    <div class="text-[10px] text-gray-400">Neon pink & cyan</div>
+                <button onclick="applyPreset('cyberpunk')" class="p-3 bg-white border-2 border-black hover:bg-black hover:text-white text-left transition group">
+                    <div class="text-xs font-bold font-mono mb-0.5">High Contrast</div>
+                    <div class="text-[10px] text-gray-500 group-hover:text-gray-300 font-mono">Inverted stark mono</div>
                 </button>
-                <button onclick="applyPreset('vintage')" class="p-2.5 rounded-xl bg-[#202020] hover:bg-[#333] border border-white/5 text-left transition">
-                    <div class="text-xs font-medium text-amber-200 mb-0.5">Vintage Grain</div>
-                    <div class="text-[10px] text-gray-400">Warm subtle noise</div>
+                <button onclick="applyPreset('vintage')" class="p-3 bg-white border-2 border-black hover:bg-black hover:text-white text-left transition group">
+                    <div class="text-xs font-bold font-mono mb-0.5">Aged Ink</div>
+                    <div class="text-[10px] text-gray-500 group-hover:text-gray-300 font-mono">Soft blur dither</div>
                 </button>
-                <button onclick="applyPreset('noir')" class="p-2.5 rounded-xl bg-[#202020] hover:bg-[#333] border border-white/5 text-left transition">
-                    <div class="text-xs font-medium text-gray-200 mb-0.5">Ink Noir</div>
-                    <div class="text-[10px] text-gray-400">High contrast stark</div>
+                <button onclick="applyPreset('noir')" class="p-3 bg-white border-2 border-black hover:bg-black hover:text-white text-left transition group">
+                    <div class="text-xs font-bold font-mono mb-0.5">Stark Press</div>
+                    <div class="text-[10px] text-gray-500 group-hover:text-gray-300 font-mono">Heavy quantize</div>
                 </button>
             </div>
 
-            <!-- Pill Navigation Buttons (Matching Reference Design) -->
-            <div class="pt-3 flex flex-col space-y-2 border-t border-[#3e3e3e]">
-                <button onclick="openModal('aboutModal')" class="pill-btn w-full py-2.5 px-6 text-center text-sm font-medium tracking-wide">
-                    About
+            <!-- Navigation Buttons -->
+            <div class="pt-3 flex flex-col space-y-2 border-t border-black">
+                <button onclick="openModal('aboutModal')" class="pill-btn w-full py-2.5 px-6 text-center text-xs uppercase tracking-wider font-semibold">
+                    About Press
                 </button>
-                <button onclick="openModal('socialsModal')" class="pill-btn w-full py-2.5 px-6 text-center text-sm font-medium tracking-wide">
-                    Socials
+                <button onclick="openModal('socialsModal')" class="pill-btn w-full py-2.5 px-6 text-center text-xs uppercase tracking-wider font-semibold">
+                    Archives
                 </button>
-                <button onclick="openModal('contactModal')" class="pill-btn w-full py-2.5 px-6 text-center text-sm font-medium tracking-wide">
-                    Contact
+                <button onclick="openModal('contactModal')" class="pill-btn w-full py-2.5 px-6 text-center text-xs uppercase tracking-wider font-semibold">
+                    Dispatch
                 </button>
             </div>
 
         </div>
 
-        <!-- Decorative Script Typography Background Watermark (Matching UI design) -->
+        <!-- Decorative Abstract Graphic SVG -->
         <svg class="watermark-svg" viewBox="0 0 350 400" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M50 320 C10 200, 140 40, 180 180 C200 250, 90 380, 240 280 C280 250, 300 180, 310 120" stroke="white" stroke-width="28" stroke-linecap="round" fill="none"/>
-            <path d="M120 350 C170 280, 220 160, 260 80" stroke="white" stroke-width="20" stroke-linecap="round" fill="none"/>
+            <circle cx="175" cy="200" r="140" stroke="#000000" stroke-width="4" stroke-dasharray="8 8"/>
+            <rect x="75" y="100" width="200" height="200" stroke="#000000" stroke-width="4"/>
+            <path d="M50 350 L300 50" stroke="#000000" stroke-width="6"/>
         </svg>
 
-        <!-- Bottom Export Pill Button (Matching UI design) -->
-        <div class="p-6 relative z-10 bg-[#282828]/90 border-t border-[#3a3a3a] shrink-0">
-            <button onclick="exportImage()" class="pill-btn w-full py-3 px-6 text-center text-sm font-medium tracking-wide flex items-center justify-center gap-2">
-                <i class="fa-solid fa-download text-xs opacity-80"></i>
-                Export
+        <!-- Bottom Export Button -->
+        <div class="p-6 relative z-10 bg-white border-t-2 border-black shrink-0">
+            <button onclick="exportImage()" class="pill-btn w-full py-3 px-6 text-center text-xs tracking-widest uppercase font-bold flex items-center justify-center gap-2.5">
+                <i class="fa-solid fa-stamp text-sm"></i>
+                Stamp Print Export
             </button>
         </div>
 
@@ -418,98 +546,98 @@
     <main class="flex-1 canvas-bg relative flex flex-col items-center justify-center p-4 md:p-8 h-full overflow-hidden">
         
         <!-- Canvas Bar Info & Controls -->
-        <div class="absolute top-4 right-4 z-20 flex items-center gap-3 bg-[#202020]/90 backdrop-blur-md px-3.5 py-1.5 rounded-full border border-white/10 text-xs text-gray-300 shadow-lg">
-            <span id="imageDimensions" class="font-mono text-gray-400">800 x 800 px</span>
-            <span class="w-1 h-1 bg-gray-500 rounded-full"></span>
-            <button onclick="toggleCompareMode()" id="compareBtn" class="hover:text-white px-2 py-0.5 rounded bg-white/5 border border-white/10 text-[11px] transition">
-                <i class="fa-solid fa-columns mr-1"></i> Compare
+        <div class="absolute top-5 right-5 z-20 flex items-center gap-3 bg-white border-2 border-black px-4 py-2 text-xs text-black shadow-[4px_4px_0px_#000000] font-mono">
+            <span id="imageDimensions" class="text-[11px] text-gray-600">800 x 800 px</span>
+            <span class="w-1.5 h-1.5 bg-black"></span>
+            <button onclick="toggleCompareMode()" id="compareBtn" class="hover:bg-black hover:text-white px-2.5 py-1 bg-white border border-black text-[11px] transition flex items-center gap-1.5">
+                <i class="fa-solid fa-columns text-[10px]"></i> Compare
             </button>
-            <span class="w-1 h-1 bg-gray-500 rounded-full"></span>
-            <button onclick="resetCanvasFilters()" class="hover:text-white transition flex items-center gap-1 text-[11px]" title="Reset All Filters">
+            <span class="w-1.5 h-1.5 bg-black"></span>
+            <button onclick="resetCanvasFilters()" class="hover:bg-black hover:text-white transition flex items-center gap-1.5 text-[11px] px-2 py-1 border border-black" title="Reset All Filters">
                 <i class="fa-solid fa-rotate-left text-[10px]"></i> Reset
             </button>
         </div>
 
         <!-- Canvas Container -->
-        <div id="canvasWrapper" class="relative max-w-full max-h-full flex items-center justify-center rounded-lg overflow-hidden border border-white/10 shadow-2xl bg-black/40 p-1">
-            <canvas id="mainCanvas" class="max-w-full max-h-[85vh] object-contain rounded transition-all duration-75"></canvas>
+        <div id="canvasWrapper" class="relative max-w-full max-h-full flex items-center justify-center border-4 border-black shadow-[12px_12px_0px_#000000] bg-white p-2">
+            <canvas id="mainCanvas" class="max-w-full max-h-[82vh] object-contain transition-all duration-75"></canvas>
             
             <!-- Drag & Drop Zone -->
-            <div id="dropZone" class="absolute inset-0 bg-black/80 border-2 border-dashed border-gray-400 rounded flex flex-col items-center justify-center opacity-0 pointer-events-none transition-opacity duration-200">
-                <i class="fa-solid fa-file-arrow-up text-4xl text-white mb-2 animate-bounce"></i>
-                <p class="text-white font-medium text-sm">Drop image here to edit</p>
+            <div id="dropZone" class="absolute inset-0 bg-white/95 modal-blur border-4 border-dashed border-black flex flex-col items-center justify-center opacity-0 pointer-events-none transition-opacity duration-200 z-30">
+                <i class="fa-solid fa-file-arrow-up text-5xl text-black mb-3 animate-bounce"></i>
+                <p class="text-black font-mono text-sm tracking-widest font-bold uppercase">Drop document sheet to process</p>
             </div>
         </div>
 
     </main>
 
-    <!-- MODAL DIALOGS -->
-    <div id="aboutModal" class="fixed inset-0 bg-black/70 modal-blur z-50 flex items-center justify-center p-4 opacity-0 pointer-events-none transition-all duration-200">
-        <div class="bg-[#242424] border border-white/15 rounded-2xl max-w-md w-full p-6 text-gray-200 shadow-2xl relative">
-            <button onclick="closeModal('aboutModal')" class="absolute top-4 right-4 text-gray-400 hover:text-white text-lg">
+    <!-- MODALS (Abstract Monochrome Style) -->
+    <div id="aboutModal" class="fixed inset-0 bg-black/60 modal-blur z-50 flex items-center justify-center p-4 opacity-0 pointer-events-none transition-all duration-300">
+        <div class="bg-white rounded-none border-4 border-black max-w-md w-full p-6 text-black shadow-[10px_10px_0px_#000000] relative font-mono">
+            <button onclick="closeModal('aboutModal')" class="absolute top-4 right-4 text-black hover:bg-black hover:text-white text-base transition px-2 py-1 border border-black">
                 <i class="fa-solid fa-xmark"></i>
             </button>
-            <div class="flex items-center gap-3 mb-4">
-                <div class="w-10 h-10 rounded-full bg-gradient-to-br from-gray-600 to-gray-800 flex items-center justify-center border border-white/20">
-                    <i class="fa-solid fa-circle-nodes text-white text-lg"></i>
+            <div class="flex items-center gap-3.5 mb-4">
+                <div class="w-11 h-11 bg-black text-white flex items-center justify-center border border-black">
+                    <i class="fa-solid fa-shapes text-lg"></i>
                 </div>
                 <div>
-                    <h3 class="text-lg font-semibold text-white leading-tight">About Stipple Studio</h3>
-                    <p class="text-xs text-gray-400">Interactive Image Effect Suite</p>
+                    <h3 class="text-base font-bold text-black leading-tight typewriter-title">ABSTRACT STIPPLE STUDIO</h3>
+                    <p class="text-xs text-gray-500">Black & White Halftone Engine</p>
                 </div>
             </div>
-            <div class="text-sm space-y-3 text-gray-300 leading-relaxed font-light border-t border-white/10 pt-4">
+            <div class="text-xs space-y-3 text-black leading-relaxed border-t-2 border-black pt-4">
                 <p>
-                    Stipple Studio reproduces classic stippling, dot-matrix halftone graphics, and custom color tones on uploaded images in real-time right inside your browser.
+                    Minimalist black and white image dither processing engine utilizing custom noise stippling and real-time canvas overlays.
                 </p>
             </div>
             <div class="mt-6 text-right">
-                <button onclick="closeModal('aboutModal')" class="pill-btn px-5 py-1.5 text-xs">Close</button>
+                <button onclick="closeModal('aboutModal')" class="pill-btn px-6 py-2 text-xs uppercase">Dismiss</button>
             </div>
         </div>
     </div>
 
     <!-- Socials Modal -->
-    <div id="socialsModal" class="fixed inset-0 bg-black/70 modal-blur z-50 flex items-center justify-center p-4 opacity-0 pointer-events-none transition-all duration-200">
-        <div class="bg-[#242424] border border-white/15 rounded-2xl max-w-sm w-full p-6 text-gray-200 shadow-2xl relative">
-            <button onclick="closeModal('socialsModal')" class="absolute top-4 right-4 text-gray-400 hover:text-white text-lg">
+    <div id="socialsModal" class="fixed inset-0 bg-black/60 modal-blur z-50 flex items-center justify-center p-4 opacity-0 pointer-events-none transition-all duration-200">
+        <div class="bg-white border-4 border-black max-w-sm w-full p-6 text-black shadow-[10px_10px_0px_#000000] relative font-mono">
+            <button onclick="closeModal('socialsModal')" class="absolute top-4 right-4 text-black hover:bg-black hover:text-white px-2 py-1 border border-black text-xs">
                 <i class="fa-solid fa-xmark"></i>
             </button>
-            <h3 class="text-lg font-semibold text-white mb-1">Social Links</h3>
-            <p class="text-xs text-gray-400 mb-5">Find us across the web</p>
+            <h3 class="text-lg font-bold text-black mb-1 typewriter-title">ARCHIVES</h3>
+            <p class="text-xs text-gray-500 mb-5">External studio references</p>
             <div class="space-y-3">
-                <a href="https://github.com" target="_blank" class="flex items-center justify-between p-3 rounded-xl bg-[#2e2e2e] hover:bg-[#383838] border border-white/5 transition text-xs text-gray-200">
-                    <span class="flex items-center gap-3"><i class="fa-brands fa-github text-lg"></i> GitHub Repository</span>
-                    <i class="fa-solid fa-arrow-up-right-from-square text-[10px] opacity-60"></i>
+                <a href="https://github.com" target="_blank" class="flex items-center justify-between p-3 bg-white hover:bg-black hover:text-white border-2 border-black transition text-xs text-black font-bold">
+                    <span class="flex items-center gap-3"><i class="fa-brands fa-github text-lg"></i> GitHub Press</span>
+                    <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
                 </a>
-                <a href="https://twitter.com" target="_blank" class="flex items-center justify-between p-3 rounded-xl bg-[#2e2e2e] hover:bg-[#383838] border border-white/5 transition text-xs text-gray-200">
-                    <span class="flex items-center gap-3"><i class="fa-brands fa-x-twitter text-lg"></i> X / Twitter</span>
-                    <i class="fa-solid fa-arrow-up-right-from-square text-[10px] opacity-60"></i>
+                <a href="https://twitter.com" target="_blank" class="flex items-center justify-between p-3 bg-white hover:bg-black hover:text-white border-2 border-black transition text-xs text-black font-bold">
+                    <span class="flex items-center gap-3"><i class="fa-brands fa-x-twitter text-lg"></i> X Dispatch</span>
+                    <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
                 </a>
             </div>
         </div>
     </div>
 
     <!-- Contact Modal -->
-    <div id="contactModal" class="fixed inset-0 bg-black/70 modal-blur z-50 flex items-center justify-center p-4 opacity-0 pointer-events-none transition-all duration-200">
-        <div class="bg-[#242424] border border-white/15 rounded-2xl max-w-md w-full p-6 text-gray-200 shadow-2xl relative">
-            <button onclick="closeModal('contactModal')" class="absolute top-4 right-4 text-gray-400 hover:text-white text-lg">
+    <div id="contactModal" class="fixed inset-0 bg-black/60 modal-blur z-50 flex items-center justify-center p-4 opacity-0 pointer-events-none transition-all duration-200">
+        <div class="bg-white border-4 border-black max-w-md w-full p-6 text-black shadow-[10px_10px_0px_#000000] relative font-mono">
+            <button onclick="closeModal('contactModal')" class="absolute top-4 right-4 text-black hover:bg-black hover:text-white px-2 py-1 border border-black text-xs">
                 <i class="fa-solid fa-xmark"></i>
             </button>
-            <h3 class="text-lg font-semibold text-white mb-1">Contact</h3>
-            <p class="text-xs text-gray-400 mb-4">Send a direct message</p>
+            <h3 class="text-lg font-bold text-black mb-1 typewriter-title">TELEGRAM DISPATCH</h3>
+            <p class="text-xs text-gray-500 mb-4">Send manuscript query</p>
             <form onsubmit="handleContactSubmit(event)" class="space-y-3 text-xs">
                 <div>
-                    <label class="block text-gray-300 mb-1 font-light">Email Address</label>
-                    <input type="email" required placeholder="email@example.com" class="w-full bg-[#1a1a1a] border border-gray-700 rounded-lg p-2.5 text-gray-100 focus:outline-none focus:border-gray-500">
+                    <label class="block text-black mb-1 font-bold">Return Address (Email)</label>
+                    <input type="email" required placeholder="writer@abstract.com" class="w-full bg-white border-2 border-black p-2.5 text-black focus:outline-none">
                 </div>
                 <div>
-                    <label class="block text-gray-300 mb-1 font-light">Message</label>
-                    <textarea rows="3" required placeholder="Your message..." class="w-full bg-[#1a1a1a] border border-gray-700 rounded-lg p-2.5 text-gray-100 focus:outline-none focus:border-gray-500"></textarea>
+                    <label class="block text-black mb-1 font-bold">Dispatch Text</label>
+                    <textarea rows="3" required placeholder="Type message..." class="w-full bg-white border-2 border-black p-2.5 text-black focus:outline-none"></textarea>
                 </div>
-                <button type="submit" class="pill-btn w-full py-2.5 text-center text-xs mt-2">Send Message</button>
+                <button type="submit" class="pill-btn w-full py-2.5 text-center text-xs mt-2 uppercase">Transmit</button>
             </form>
-            <div id="contactSuccess" class="hidden text-center text-xs text-green-400 mt-3">Message sent successfully!</div>
+            <div id="contactSuccess" class="hidden text-center text-xs text-black font-bold mt-3">Telegram transmitted successfully.</div>
         </div>
     </div>
 
@@ -528,6 +656,15 @@
         let isCompareMode = false;
         let cropRatio = 'original';
 
+        // Static processed image buffer canvas to keep stipple image static during text animation
+        let staticImageCanvas = document.createElement('canvas');
+
+        // Animated Text Engine Variables
+        let isAnimPlaying = true;
+        let animFrameId = null;
+        let animTime = 0;
+        let lastTimestamp = 0;
+
         const sliders = {
             size: document.getElementById('sizeSlider'),
             contrast: document.getElementById('contrastSlider'),
@@ -540,17 +677,22 @@
             posterize: document.getElementById('posterizeSlider'),
             pixelate: document.getElementById('pixelateSlider'),
             blur: document.getElementById('blurSlider'),
-            rotation: document.getElementById('rotationSlider')
+            rotation: document.getElementById('rotationSlider'),
+            fontSize: document.getElementById('fontSizeSlider'),
+            animSpeed: document.getElementById('animSpeedSlider'),
+            textX: document.getElementById('textXSlider'),
+            textY: document.getElementById('textYSlider')
         };
 
         window.addEventListener('load', () => {
             initDefaultImage();
             setupEventListeners();
+            startAnimationLoop();
         });
 
         function switchTab(tabId) {
             activeTab = tabId;
-            ['stipple', 'color', 'artistic', 'transform', 'presets'].forEach(t => {
+            ['stipple', 'color', 'text', 'artistic', 'transform', 'presets'].forEach(t => {
                 const btn = document.getElementById(`tab-${t}`);
                 const panel = document.getElementById(`panel-${t}`);
                 if (t === tabId) {
@@ -605,9 +747,11 @@
                     if (valSpan) {
                         let unit = '';
                         if (key === 'blur') unit = 'px';
-                        else if (key === 'stippling' || key === 'noise' || key === 'vignette') unit = '%';
+                        else if (key === 'stippling' || key === 'noise' || key === 'vignette' || key === 'textX' || key === 'textY') unit = '%';
                         else if (key === 'hue' || key === 'rotation') unit = '°';
                         else if (key === 'pixelate') unit = 'x';
+                        else if (key === 'fontSize') unit = 'px';
+                        else if (key === 'animSpeed') unit = 'x';
                         else if (key === 'posterize') unit = e.target.value === '16' ? 'Off' : '';
                         valSpan.innerText = e.target.value + unit;
                     }
@@ -619,6 +763,13 @@
             document.getElementById('sepiaToggle').addEventListener('change', renderEffect);
             document.getElementById('dotColorPicker').addEventListener('input', debounceRender);
             document.getElementById('bgColorPicker').addEventListener('input', debounceRender);
+            
+            // Text inputs
+            document.getElementById('textInput').addEventListener('input', debounceRender);
+            document.getElementById('fontSelect').addEventListener('change', renderEffect);
+            document.getElementById('animPresetSelect').addEventListener('change', renderEffect);
+            document.getElementById('textColorPicker').addEventListener('input', debounceRender);
+            document.getElementById('glowColorPicker').addEventListener('input', debounceRender);
 
             imageInput.addEventListener('change', (e) => {
                 if (e.target.files && e.target.files[0]) {
@@ -643,30 +794,58 @@
             });
         }
 
-        function debounceRender() {
-            if (renderTimeout) clearTimeout(renderTimeout);
-            renderTimeout = setTimeout(renderEffect, 10);
+        function startAnimationLoop() {
+            function loop(timestamp) {
+                if (!lastTimestamp) lastTimestamp = timestamp;
+                const delta = (timestamp - lastTimestamp) / 1000;
+                lastTimestamp = timestamp;
+
+                if (isAnimPlaying) {
+                    const speed = parseFloat(sliders.animSpeed.value);
+                    animTime += delta * speed;
+                    
+                    // Draw pre-rendered static image base and top animated text overlay
+                    if (staticImageCanvas && staticImageCanvas.width > 0) {
+                        ctx.clearRect(0, 0, canvas.width, canvas.height);
+                        ctx.drawImage(staticImageCanvas, 0, 0);
+                        renderAnimatedTextOverlay(canvas.width, canvas.height);
+                    }
+                }
+
+                animFrameId = requestAnimationFrame(loop);
+            }
+            animFrameId = requestAnimationFrame(loop);
+        }
+
+        function toggleTextAnimation() {
+            isAnimPlaying = !isAnimPlaying;
+            const playText = document.getElementById('animPlayText');
+            const playIcon = document.getElementById('animPlayIcon');
+            if (isAnimPlaying) {
+                playText.innerText = 'Pause';
+                playIcon.className = 'fa-solid fa-pause text-[10px]';
+            } else {
+                playText.innerText = 'Play';
+                playIcon.className = 'fa-solid fa-play text-[10px]';
+            }
         }
 
         function loadImageFile(file) {
             const reader = new FileReader();
-            reader.onload = (event) => {
+            reader.onload = (e) => {
                 const img = new Image();
                 img.onload = () => {
                     loadedImage = img;
                     renderEffect();
                 };
-                img.src = event.target.result;
+                img.src = e.target.result;
             };
             reader.readAsDataURL(file);
         }
 
-        function toggleFlip(dir) {
-            if (dir === 'h') flipH = !flipH;
-            if (dir === 'v') flipV = !flipV;
-            document.getElementById('flipHBtn').classList.toggle('border-white/40', flipH);
-            document.getElementById('flipVBtn').classList.toggle('border-white/40', flipV);
-            renderEffect();
+        function debounceRender() {
+            if (renderTimeout) clearTimeout(renderTimeout);
+            renderTimeout = setTimeout(renderEffect, 20);
         }
 
         function setCropRatio(ratio) {
@@ -674,168 +853,316 @@
             renderEffect();
         }
 
+        function toggleFlip(axis) {
+            if (axis === 'h') flipH = !flipH;
+            if (axis === 'v') flipV = !flipV;
+            renderEffect();
+        }
+
         function toggleCompareMode() {
             isCompareMode = !isCompareMode;
-            document.getElementById('compareBtn').classList.toggle('bg-white/20', isCompareMode);
+            const btn = document.getElementById('compareBtn');
+            if (isCompareMode) {
+                btn.classList.add('bg-white/25', 'text-white');
+            } else {
+                btn.classList.remove('bg-white/25', 'text-white');
+            }
             renderEffect();
         }
 
         function renderEffect() {
             if (!loadedImage) return;
 
-            const maxDimension = 1200;
-            let width = loadedImage.width;
-            let height = loadedImage.height;
+            let sourceWidth = loadedImage.width;
+            let sourceHeight = loadedImage.height;
+            let srcX = 0;
+            let srcY = 0;
 
             if (cropRatio === '1:1') {
-                const min = Math.min(width, height);
-                width = min; height = min;
+                const minDim = Math.min(sourceWidth, sourceHeight);
+                srcX = (sourceWidth - minDim) / 2;
+                srcY = (sourceHeight - minDim) / 2;
+                sourceWidth = minDim;
+                sourceHeight = minDim;
             } else if (cropRatio === '16:9') {
-                height = Math.round(width * (9 / 16));
-            }
-
-            if (width > maxDimension || height > maxDimension) {
-                if (width > height) {
-                    height = Math.round((height * maxDimension) / width);
-                    width = maxDimension;
+                if (sourceWidth / sourceHeight > 16 / 9) {
+                    const newWidth = sourceHeight * (16 / 9);
+                    srcX = (sourceWidth - newWidth) / 2;
+                    sourceWidth = newWidth;
                 } else {
-                    width = Math.round((width * maxDimension) / height);
-                    height = maxDimension;
+                    const newHeight = sourceWidth * (9 / 16);
+                    srcY = (sourceHeight - newHeight) / 2;
+                    sourceHeight = newHeight;
                 }
             }
 
-            canvas.width = width;
-            canvas.height = height;
+            const rotation = parseInt(sliders.rotation.value);
+            const isRotated90 = rotation === 90 || rotation === 270;
+            const targetWidth = isRotated90 ? sourceHeight : sourceWidth;
+            const targetHeight = isRotated90 ? sourceWidth : sourceHeight;
+
+            canvas.width = targetWidth;
+            canvas.height = targetHeight;
+            const width = canvas.width;
+            const height = canvas.height;
+
             document.getElementById('imageDimensions').innerText = `${width} x ${height} px`;
 
-            const stageCanvas = document.createElement('canvas');
-            stageCanvas.width = width;
-            stageCanvas.height = height;
-            const stageCtx = stageCanvas.getContext('2d');
+            // Prepare offscreen canvas for rendering static background image
+            staticImageCanvas.width = width;
+            staticImageCanvas.height = height;
+            const sCtx = staticImageCanvas.getContext('2d');
 
-            stageCtx.save();
-            stageCtx.translate(width / 2, height / 2);
-
-            const rotDeg = parseInt(sliders.rotation.value);
-            stageCtx.rotate((rotDeg * Math.PI) / 180);
-            stageCtx.scale(flipH ? -1 : 1, flipV ? -1 : 1);
-
-            const bVal = 100 + parseInt(sliders.brightness.value);
-            const cVal = parseFloat(sliders.contrast.value) * 100;
-            const sVal = parseFloat(sliders.saturation.value) * 100;
-            const hVal = parseInt(sliders.hue.value);
-            const blurVal = parseFloat(sliders.blur.value);
-            const isSepia = document.getElementById('sepiaToggle').checked;
-
-            stageCtx.filter = `brightness(${bVal}%) contrast(${cVal}%) saturate(${sVal}%) hue-rotate(${hVal}deg) blur(${blurVal}px) ${isSepia ? 'sepia(100%)' : ''}`;
-            stageCtx.drawImage(loadedImage, -width / 2, -height / 2, width, height);
-            stageCtx.restore();
-
-            const pixVal = parseInt(sliders.pixelate.value);
-            if (pixVal > 1) {
-                const smallW = Math.max(1, Math.floor(width / pixVal));
-                const smallH = Math.max(1, Math.floor(height / pixVal));
-                const pixCanvas = document.createElement('canvas');
-                pixCanvas.width = smallW;
-                pixCanvas.height = smallH;
-                const pCtx = pixCanvas.getContext('2d');
-                pCtx.drawImage(stageCanvas, 0, 0, smallW, smallH);
-
-                stageCtx.imageSmoothingEnabled = false;
-                stageCtx.drawImage(pixCanvas, 0, 0, smallW, smallH, 0, 0, width, height);
-            }
-
+            // If in compare mode, render original image on left half
             if (isCompareMode) {
-                ctx.drawImage(stageCanvas, 0, 0);
-                ctx.strokeStyle = '#ffffff';
-                ctx.lineWidth = 2;
-                ctx.beginPath();
-                ctx.moveTo(width / 2, 0);
-                ctx.lineTo(width / 2, height);
-                ctx.stroke();
+                sCtx.save();
+                sCtx.drawImage(loadedImage, srcX, srcY, sourceWidth, sourceHeight, 0, 0, width, height);
+                sCtx.restore();
+                sCtx.strokeStyle = '#ffffff';
+                sCtx.lineWidth = 2;
+                sCtx.beginPath();
+                sCtx.moveTo(width / 2, 0);
+                sCtx.lineTo(width / 2, height);
+                sCtx.stroke();
+
+                ctx.drawImage(staticImageCanvas, 0, 0);
                 return;
             }
 
-            const imgData = stageCtx.getImageData(0, 0, width, height);
-            const pixels = imgData.data;
+            // Create offscreen buffer canvas for image processing
+            const offCanvas = document.createElement('canvas');
+            offCanvas.width = width;
+            offCanvas.height = height;
+            const offCtx = offCanvas.getContext('2d', { willReadFrequently: true });
+
+            // Apply transformations
+            offCtx.save();
+            offCtx.translate(width / 2, height / 2);
+            offCtx.rotate((rotation * Math.PI) / 180);
+            offCtx.scale(flipH ? -1 : 1, flipV ? -1 : 1);
+
+            const drawW = isRotated90 ? height : width;
+            const drawH = isRotated90 ? width : height;
+            offCtx.drawImage(loadedImage, srcX, srcY, sourceWidth, sourceHeight, -drawW / 2, -drawH / 2, drawW, drawH);
+            offCtx.restore();
+
+            // Apply Pixelate / Posterize / CSS Filters
+            const brightness = parseInt(sliders.brightness.value);
+            const saturation = parseFloat(sliders.saturation.value);
+            const hue = parseInt(sliders.hue.value);
+            const blur = parseFloat(sliders.blur.value);
+            const sepia = document.getElementById('sepiaToggle').checked ? 100 : 0;
+
+            offCtx.filter = `brightness(${100 + brightness}%) saturate(${saturation * 100}%) hue-rotate(${hue}deg) blur(${blur}px) sepia(${sepia}%)`;
+            offCtx.drawImage(offCanvas, 0, 0);
+            offCtx.filter = 'none';
+
+            // Get Image Data for Stippling Process
+            const imgData = offCtx.getImageData(0, 0, width, height);
+            const data = imgData.data;
+
+            // Fill Background on Static Image Canvas
+            sCtx.fillStyle = document.getElementById('bgColorPicker').value;
+            sCtx.fillRect(0, 0, width, height);
+
+            const dotColor = document.getElementById('dotColorPicker').value;
+            sCtx.fillStyle = dotColor;
 
             const dotSize = parseFloat(sliders.size.value);
-            const stippleDensity = parseInt(sliders.stippling.value) / 100;
-            const jitterVal = parseInt(sliders.noise.value) / 100;
+            const contrast = parseFloat(sliders.contrast.value);
+            const density = parseInt(sliders.stippling.value) / 100;
+            const jitter = parseInt(sliders.noise.value) / 100;
             const isInverted = document.getElementById('invertColors').checked;
-            const dotColor = document.getElementById('dotColorPicker').value;
-            const bgColor = document.getElementById('bgColorPicker').value;
-
-            ctx.fillStyle = bgColor;
-            ctx.fillRect(0, 0, width, height);
-
-            ctx.fillStyle = dotColor;
-
             const posterizeLevels = parseInt(sliders.posterize.value);
+
             const step = Math.max(2, Math.floor(dotSize));
+
+            // Generate seeded/deterministic stippling so the dot positions do not jitter/animate continuously
+            let seed = 12345;
+            function seededRandom() {
+                const x = Math.sin(seed++) * 10000;
+                return x - Math.floor(x);
+            }
 
             for (let y = 0; y < height; y += step) {
                 for (let x = 0; x < width; x += step) {
-                    const pixelIndex = (y * width + x) * 4;
+                    if (seededRandom() > density) continue;
 
-                    let r = pixels[pixelIndex];
-                    let g = pixels[pixelIndex + 1];
-                    let b = pixels[pixelIndex + 2];
+                    const pixelIdx = (y * width + x) * 4;
+                    let r = data[pixelIdx];
+                    let g = data[pixelIdx + 1];
+                    let b = data[pixelIdx + 2];
 
                     if (posterizeLevels < 16) {
-                        const numAreas = 255 / (posterizeLevels - 1);
-                        r = Math.round(Math.round(r / numAreas) * numAreas);
-                        g = Math.round(Math.round(g / numAreas) * numAreas);
-                        b = Math.round(Math.round(b / numAreas) * numAreas);
+                        const stepP = 255 / (posterizeLevels - 1);
+                        r = Math.round(r / stepP) * stepP;
+                        g = Math.round(g / stepP) * stepP;
+                        b = Math.round(b / stepP) * stepP;
                     }
 
-                    let luminance = (0.299 * r + 0.587 * g + 0.114 * b) / 255;
-                    if (isInverted) luminance = 1 - luminance;
+                    let brightnessVal = (0.299 * r + 0.587 * g + 0.114 * b) / 255;
+                    brightnessVal = (brightnessVal - 0.5) * contrast + 0.5;
+                    brightnessVal = Math.max(0, Math.min(1, brightnessVal));
 
-                    const darkness = 1 - luminance;
+                    if (isInverted) brightnessVal = 1 - brightnessVal;
 
-                    if (stippleDensity < 1.0) {
-                        if (Math.random() > stippleDensity && darkness < 0.8) continue;
+                    const radius = (1 - brightnessVal) * (dotSize / 2);
+                    if (radius <= 0.2) continue;
+
+                    let px = x + (seededRandom() - 0.5) * jitter * step;
+                    let py = y + (seededRandom() - 0.5) * jitter * step;
+
+                    sCtx.beginPath();
+                    if (selectedShape === 'circle') {
+                        sCtx.arc(px, py, radius, 0, Math.PI * 2);
+                    } else if (selectedShape === 'square') {
+                        sCtx.rect(px - radius, py - radius, radius * 2, radius * 2);
+                    } else if (selectedShape === 'diamond') {
+                        sCtx.moveTo(px, py - radius);
+                        sCtx.lineTo(px + radius, py);
+                        sCtx.lineTo(px, py + radius);
+                        sCtx.lineTo(px - radius, py);
+                        sCtx.closePath();
                     }
-
-                    const radius = (darkness * (dotSize / 2)) * 1.25;
-
-                    if (radius > 0.2) {
-                        let centerX = x + step / 2;
-                        let centerY = y + step / 2;
-
-                        if (jitterVal > 0) {
-                            centerX += (Math.random() - 0.5) * step * jitterVal;
-                            centerY += (Math.random() - 0.5) * step * jitterVal;
-                        }
-
-                        ctx.beginPath();
-                        if (selectedShape === 'circle') {
-                            ctx.arc(centerX, centerY, radius, 0, Math.PI * 2);
-                            ctx.fill();
-                        } else if (selectedShape === 'square') {
-                            const side = radius * 1.8;
-                            ctx.fillRect(centerX - side/2, centerY - side/2, side, side);
-                        } else if (selectedShape === 'diamond') {
-                            ctx.save();
-                            ctx.translate(centerX, centerY);
-                            ctx.rotate(Math.PI / 4);
-                            const side = radius * 1.6;
-                            ctx.fillRect(-side/2, -side/2, side, side);
-                            ctx.restore();
-                        }
-                    }
+                    sCtx.fill();
                 }
             }
 
+            // Apply Vignette on Static Image Canvas
             const vignVal = parseInt(sliders.vignette.value);
             if (vignVal > 0) {
-                const radGrad = ctx.createRadialGradient(width/2, height/2, Math.min(width, height) * 0.3, width/2, height/2, Math.max(width, height) * 0.7);
+                const radGrad = sCtx.createRadialGradient(width/2, height/2, Math.min(width, height) * 0.3, width/2, height/2, Math.max(width, height) * 0.7);
                 radGrad.addColorStop(0, 'rgba(0,0,0,0)');
                 radGrad.addColorStop(1, `rgba(0,0,0,${vignVal / 100})`);
-                ctx.fillStyle = radGrad;
-                ctx.fillRect(0, 0, width, height);
+                sCtx.fillStyle = radGrad;
+                sCtx.fillRect(0, 0, width, height);
             }
+
+            // Copy static processed image canvas to main display canvas & render animated text
+            ctx.clearRect(0, 0, width, height);
+            ctx.drawImage(staticImageCanvas, 0, 0);
+            renderAnimatedTextOverlay(width, height);
+        }
+
+        function renderAnimatedTextOverlay(width, height) {
+            const rawText = document.getElementById('textInput').value;
+            if (!rawText.trim()) return;
+
+            const fontFamily = document.getElementById('fontSelect').value;
+            const fontSize = parseInt(sliders.fontSize.value);
+            const preset = document.getElementById('animPresetSelect').value;
+            const textColor = document.getElementById('textColorPicker').value;
+            const glowColor = document.getElementById('glowColorPicker').value;
+
+            const posX = (parseInt(sliders.textX.value) / 100) * width;
+            let posY = (parseInt(sliders.textY.value) / 100) * height;
+
+            ctx.save();
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.font = `bold ${fontSize}px "${fontFamily}", sans-serif`;
+
+            if (preset === 'typewriter') {
+                const charCount = Math.floor((animTime * 6) % (rawText.length + 6));
+                const currentText = rawText.substring(0, Math.min(rawText.length, charCount));
+                
+                ctx.shadowColor = glowColor;
+                ctx.shadowBlur = 12;
+                ctx.fillStyle = textColor;
+                ctx.fillText(currentText + (Math.floor(animTime * 2) % 2 === 0 ? '_' : ''), posX, posY);
+            } 
+            else if (preset === 'neon') {
+                const pulse = (Math.sin(animTime * 4) + 1) / 2;
+                ctx.shadowColor = glowColor;
+                ctx.shadowBlur = 10 + pulse * 25;
+                ctx.fillStyle = textColor;
+                ctx.fillText(rawText, posX, posY);
+            } 
+            else if (preset === 'bounce') {
+                const offsetY = Math.abs(Math.sin(animTime * 3.5)) * (fontSize * 0.5);
+                ctx.shadowColor = glowColor;
+                ctx.shadowBlur = 10;
+                ctx.fillStyle = textColor;
+                ctx.fillText(rawText, posX, posY - offsetY);
+            } 
+            else if (preset === 'glitch') {
+                const isGlitched = Math.random() < 0.25;
+                const glitchShiftX = isGlitched ? (Math.random() - 0.5) * 12 : 0;
+                const glitchShiftY = isGlitched ? (Math.random() - 0.5) * 8 : 0;
+
+                if (isGlitched) {
+                    ctx.fillStyle = glowColor;
+                    ctx.fillText(rawText, posX + glitchShiftX * 1.5, posY + glitchShiftY);
+                }
+
+                ctx.shadowColor = glowColor;
+                ctx.shadowBlur = isGlitched ? 20 : 6;
+                ctx.fillStyle = textColor;
+                ctx.fillText(rawText, posX + glitchShiftX, posY + glitchShiftY);
+            } 
+            else if (preset === 'wave') {
+                const chars = rawText.split('');
+                const totalWidth = ctx.measureText(rawText).width;
+                let currentX = posX - totalWidth / 2;
+
+                chars.forEach((char, idx) => {
+                    const charWidth = ctx.measureText(char).width;
+                    const charY = posY + Math.sin(animTime * 4 + idx * 0.4) * (fontSize * 0.25);
+
+                    ctx.shadowColor = glowColor;
+                    ctx.shadowBlur = 10;
+                    ctx.fillStyle = textColor;
+                    ctx.fillText(char, currentX + charWidth / 2, charY);
+                    currentX += charWidth;
+                });
+            } 
+            else if (preset === 'marquee') {
+                const textWidth = ctx.measureText(rawText).width;
+                const totalSpan = width + textWidth;
+                const marqueeX = ((animTime * 150) % totalSpan) - textWidth / 2;
+
+                ctx.shadowColor = glowColor;
+                ctx.shadowBlur = 12;
+                ctx.fillStyle = textColor;
+                ctx.fillText(rawText, marqueeX, posY);
+            }
+
+            ctx.restore();
+        }
+
+        function exportVideoAnimation() {
+            if (!canvas || !('MediaRecorder' in window)) {
+                alert('MediaRecorder is not supported in your browser.');
+                return;
+            }
+
+            const recStatus = document.getElementById('recordingStatus');
+            recStatus.classList.remove('hidden');
+
+            const stream = canvas.captureStream(30);
+            const mediaRecorder = new MediaRecorder(stream, { mimeType: 'video/webm' });
+            const chunks = [];
+
+            mediaRecorder.ondataavailable = (e) => {
+                if (e.data.size > 0) chunks.push(e.data);
+            };
+
+            mediaRecorder.onstop = () => {
+                recStatus.classList.add('hidden');
+                const blob = new Blob(chunks, { type: 'video/webm' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = 'stipple-animated-text.webm';
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+            };
+
+            mediaRecorder.start();
+            setTimeout(() => {
+                mediaRecorder.stop();
+            }, 4000);
         }
 
         function setDotShape(shape) {
@@ -843,9 +1170,9 @@
             ['Circle', 'Square', 'Diamond'].forEach(s => {
                 const btn = document.getElementById(`shape${s}`);
                 if (s.toLowerCase() === shape) {
-                    btn.className = 'py-1 px-2.5 text-[10px] rounded-full bg-[#4a4a4a] border border-gray-400 text-white';
+                    btn.className = 'py-1 px-2.5 text-[10px] font-mono rounded-none bg-black text-white border border-black';
                 } else {
-                    btn.className = 'py-1 px-2.5 text-[10px] rounded-full bg-[#202020] border border-transparent text-gray-400';
+                    btn.className = 'py-1 px-2.5 text-[10px] font-mono rounded-none bg-white text-black border border-black';
                 }
             });
             renderEffect();
@@ -855,11 +1182,12 @@
             resetCanvasFilters();
             if (preset === 'cyberpunk') {
                 sliders.size.value = 8;
-                document.getElementById('dotColorPicker').value = '#ff007f';
-                document.getElementById('bgColorPicker').value = '#00f0ff';
+                document.getElementById('dotColorPicker').value = '#ffffff';
+                document.getElementById('bgColorPicker').value = '#000000';
+                document.getElementById('invertColors').checked = true;
             } else if (preset === 'vintage') {
-                document.getElementById('sepiaToggle').checked = true;
-                sliders.vignette.value = 45;
+                document.getElementById('sepiaToggle').checked = false;
+                sliders.vignette.value = 30;
                 sliders.blur.value = 1;
             } else if (preset === 'noir') {
                 sliders.contrast.value = 2.5;
@@ -887,8 +1215,8 @@
 
             document.getElementById('invertColors').checked = false;
             document.getElementById('sepiaToggle').checked = false;
-            document.getElementById('dotColorPicker').value = "#ffffff";
-            document.getElementById('bgColorPicker').value = "#121212";
+            document.getElementById('dotColorPicker').value = "#000000";
+            document.getElementById('bgColorPicker').value = "#ffffff";
 
             flipH = false;
             flipV = false;
