@@ -135,12 +135,17 @@
         <aside class="w-80 md:w-96 bg-white border-r border-slate-200 flex flex-col shrink-0 z-10">
             
             <!-- SEGMENTED TAB BUTTONS -->
-            <div class="p-4 border-b border-slate-100 bg-slate-50/50">
-                <div class="grid grid-cols-5 gap-1 p-1 bg-slate-200/60 rounded-xl text-xs font-medium text-slate-600">
+            <div class="p-3 border-b border-slate-100 bg-slate-50/50">
+                <div class="grid grid-cols-4 gap-1 p-1 bg-slate-200/60 rounded-xl text-[11px] font-medium text-slate-600 mb-1">
                     <button class="tab-btn py-1.5 rounded-lg text-center transition font-semibold bg-white text-slate-900 shadow-sm" onclick="switchTab('stipple', this)">Stipple</button>
                     <button class="tab-btn py-1.5 rounded-lg text-center transition font-semibold hover:text-slate-900" onclick="switchTab('dither', this)">Dither</button>
+                    <button class="tab-btn py-1.5 rounded-lg text-center transition font-semibold hover:text-slate-900" onclick="switchTab('halftone', this)">Halftone</button>
+                    <button class="tab-btn py-1.5 rounded-lg text-center transition font-semibold hover:text-slate-900" onclick="switchTab('tone', this)">Color/Tone</button>
+                </div>
+                <div class="grid grid-cols-4 gap-1 p-1 bg-slate-200/60 rounded-xl text-[11px] font-medium text-slate-600">
                     <button class="tab-btn py-1.5 rounded-lg text-center transition font-semibold hover:text-slate-900" onclick="switchTab('distort', this)">Warp</button>
                     <button class="tab-btn py-1.5 rounded-lg text-center transition font-semibold hover:text-slate-900" onclick="switchTab('glow', this)">Glow</button>
+                    <button class="tab-btn py-1.5 rounded-lg text-center transition font-semibold hover:text-slate-900" onclick="switchTab('imgmotion', this)">Img Motion</button>
                     <button class="tab-btn py-1.5 rounded-lg text-center transition font-semibold hover:text-slate-900" onclick="switchTab('text', this)">Type</button>
                 </div>
             </div>
@@ -191,27 +196,6 @@
                             <button data-shape="square" class="dot-shape-btn py-2 border border-slate-200 rounded-lg text-xs font-medium hover:border-slate-300 transition">Square</button>
                             <button data-shape="cross" class="dot-shape-btn py-2 border border-slate-200 rounded-lg text-xs font-medium hover:border-slate-300 transition">Cross</button>
                             <button data-shape="ring" class="dot-shape-btn py-2 border border-slate-200 rounded-lg text-xs font-medium hover:border-slate-300 transition">Ring</button>
-                        </div>
-                    </div>
-
-                    <!-- Image Animation Motion -->
-                    <div class="space-y-3 pt-3 border-t border-slate-100">
-                        <label class="text-xs font-bold text-slate-800 uppercase tracking-wider">Image Motion FX</label>
-                        <select id="imgAnimEffectSelect" class="w-full text-xs font-medium border border-slate-200 rounded-lg p-2.5 bg-white text-slate-800 focus:outline-none focus:border-blue-500">
-                            <option value="none">Static Image (No Motion)</option>
-                            <option value="glitch">Scanline Cyber Glitch</option>
-                            <option value="pulse">Breathing Zoom Pulse</option>
-                            <option value="halftone">Halftone Rotation</option>
-                            <option value="wave">Ripple Sine Wave</option>
-                            <option value="drift">Stipple Position Drift</option>
-                        </select>
-
-                        <div class="space-y-2">
-                            <div class="flex justify-between items-center text-xs">
-                                <label for="imgAnimSpeed" class="font-semibold text-slate-700">Motion Tempo</label>
-                                <span id="imgAnimSpeedVal" class="mono text-[11px] font-medium bg-slate-100 px-1.5 py-0.5 rounded text-slate-600">1.0x</span>
-                            </div>
-                            <input type="range" id="imgAnimSpeed" min="0.1" max="3" step="0.1" value="1.0">
                         </div>
                     </div>
 
@@ -268,7 +252,62 @@
                     </div>
                 </div>
 
-                <!-- 3. WARP / DISTORT TAB -->
+                <!-- 3. HALFTONE TAB (NEW) -->
+                <div id="panel-halftone" class="tab-panel space-y-5 hidden">
+                    <div class="p-3.5 bg-slate-50 rounded-xl border border-slate-200/80 flex items-center justify-between">
+                        <span class="text-xs font-bold text-slate-800">Enable Halftone Screen</span>
+                        <input type="checkbox" id="enableHalftoneToggle" class="w-4 h-4 text-blue-600 rounded border-slate-300 focus:ring-blue-500 cursor-pointer">
+                    </div>
+
+                    <div class="space-y-2">
+                        <label for="halftoneStyleSelect" class="text-xs font-semibold text-slate-700">Screen Type</label>
+                        <select id="halftoneStyleSelect" class="w-full text-xs font-medium border border-slate-200 rounded-lg p-2.5 bg-white text-slate-800 focus:outline-none focus:border-blue-500">
+                            <option value="grid">Grid Dot Matrix</option>
+                            <option value="lines">Line Screen</option>
+                            <option value="radial">Concentric Rings</option>
+                        </select>
+                    </div>
+
+                    <div class="space-y-2">
+                        <div class="flex justify-between items-center text-xs">
+                            <label for="halftoneSize" class="font-semibold text-slate-700">Cell Size</label>
+                            <span id="halftoneSizeVal" class="mono text-[11px] font-medium bg-slate-100 px-1.5 py-0.5 rounded text-slate-600">8px</span>
+                        </div>
+                        <input type="range" id="halftoneSize" min="4" max="32" value="8">
+                    </div>
+                </div>
+
+                <!-- 4. COLOR / TONE TAB (NEW) -->
+                <div id="panel-tone" class="tab-panel space-y-5 hidden">
+                    <div class="space-y-2">
+                        <label for="tonePresetSelect" class="text-xs font-semibold text-slate-700">Tone Preset</label>
+                        <select id="tonePresetSelect" class="w-full text-xs font-medium border border-slate-200 rounded-lg p-2.5 bg-white text-slate-800 focus:outline-none focus:border-blue-500">
+                            <option value="none">Normal (Original Colors)</option>
+                            <option value="sepia">Vintage Sepia Tone</option>
+                            <option value="mono">High Contrast Monochrome</option>
+                            <option value="posterize">Posterize / Quantize</option>
+                            <option value="invert">Invert Image</option>
+                        </select>
+                    </div>
+
+                    <div class="space-y-2">
+                        <div class="flex justify-between items-center text-xs">
+                            <label for="brightnessLevel" class="font-semibold text-slate-700">Brightness</label>
+                            <span id="brightnessLevelVal" class="mono text-[11px] font-medium bg-slate-100 px-1.5 py-0.5 rounded text-slate-600">0</span>
+                        </div>
+                        <input type="range" id="brightnessLevel" min="-100" max="100" value="0">
+                    </div>
+
+                    <div class="space-y-2">
+                        <div class="flex justify-between items-center text-xs">
+                            <label for="contrastLevel" class="font-semibold text-slate-700">Contrast</label>
+                            <span id="contrastLevelVal" class="mono text-[11px] font-medium bg-slate-100 px-1.5 py-0.5 rounded text-slate-600">0</span>
+                        </div>
+                        <input type="range" id="contrastLevel" min="-100" max="100" value="0">
+                    </div>
+                </div>
+
+                <!-- 5. WARP / DISTORT TAB -->
                 <div id="panel-distort" class="tab-panel space-y-5 hidden">
                     <div class="space-y-2">
                         <div class="flex justify-between items-center text-xs">
@@ -295,7 +334,7 @@
                     </div>
                 </div>
 
-                <!-- 4. GLOW TAB -->
+                <!-- 6. GLOW TAB -->
                 <div id="panel-glow" class="tab-panel space-y-5 hidden">
                     <div class="space-y-2">
                         <div class="flex justify-between items-center text-xs">
@@ -314,7 +353,30 @@
                     </div>
                 </div>
 
-                <!-- 5. TYPE TAB -->
+                <!-- 7. IMAGE MOTION TAB (DEDICATED) -->
+                <div id="panel-imgmotion" class="tab-panel space-y-5 hidden">
+                    <div class="space-y-3">
+                        <label class="text-xs font-bold text-slate-800 uppercase tracking-wider">Image Motion FX</label>
+                        <select id="imgAnimEffectSelect" class="w-full text-xs font-medium border border-slate-200 rounded-lg p-2.5 bg-white text-slate-800 focus:outline-none focus:border-blue-500">
+                            <option value="none">Static Image (No Motion)</option>
+                            <option value="glitch">Scanline Cyber Glitch</option>
+                            <option value="pulse">Breathing Zoom Pulse</option>
+                            <option value="halftone">Halftone Rotation</option>
+                            <option value="wave">Ripple Sine Wave</option>
+                            <option value="drift">Stipple Position Drift</option>
+                        </select>
+
+                        <div class="space-y-2">
+                            <div class="flex justify-between items-center text-xs">
+                                <label for="imgAnimSpeed" class="font-semibold text-slate-700">Motion Tempo</label>
+                                <span id="imgAnimSpeedVal" class="mono text-[11px] font-medium bg-slate-100 px-1.5 py-0.5 rounded text-slate-600">1.0x</span>
+                            </div>
+                            <input type="range" id="imgAnimSpeed" min="0.1" max="3" step="0.1" value="1.0">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 8. TYPE TAB -->
                 <div id="panel-text" class="tab-panel space-y-5 hidden">
                     <div class="p-3.5 bg-slate-50 rounded-xl border border-slate-200/80 flex items-center justify-between">
                         <span class="text-xs font-bold text-slate-800">Show Text Overlay</span>
@@ -444,9 +506,12 @@
                 btn.classList.add('hover:text-slate-900');
             });
 
-            document.getElementById(`panel-${tabId}`).classList.remove('hidden');
-            buttonEl.classList.add('bg-white', 'text-slate-900', 'shadow-sm');
-            buttonEl.classList.remove('hover:text-slate-900');
+            const panel = document.getElementById(`panel-${tabId}`);
+            if (panel) panel.classList.remove('hidden');
+            if (buttonEl) {
+                buttonEl.classList.add('bg-white', 'text-slate-900', 'shadow-sm');
+                buttonEl.classList.remove('hover:text-slate-900');
+            }
         }
 
         // LOAD DEFAULT PLACEHOLDER
@@ -496,9 +561,12 @@
             // Read Controls
             const enableStipple = document.getElementById('enableStippleToggle').checked;
             const enableDither = document.getElementById('enableDitherToggle').checked;
+            const enableHalftone = document.getElementById('enableHalftoneToggle').checked;
 
-            // Draw Base Image
+            // Draw Base Image & Adjust Tone/Color
             offCtx.drawImage(sourceImage, 0, 0, w, h);
+            applyColorToneFilters(offCtx, w, h);
+
             let imgData = offCtx.getImageData(0, 0, w, h);
 
             // Apply Selected Engine
@@ -506,10 +574,95 @@
                 applyStippleEngine(offCtx, imgData, w, h);
             } else if (enableDither) {
                 applyDitherEngine(offCtx, imgData, w, h);
+            } else if (enableHalftone) {
+                applyHalftoneEngine(offCtx, imgData, w, h);
             }
 
             // Apply Warp & Glow Effects
             applyWarpAndGlowEffects(offCtx, w, h);
+        }
+
+        // COLOR & TONE ENGINE
+        function applyColorToneFilters(targetCtx, w, h) {
+            const preset = document.getElementById('tonePresetSelect').value;
+            const brightness = parseInt(document.getElementById('brightnessLevel').value);
+            const contrast = parseInt(document.getElementById('contrastLevel').value);
+
+            if (preset === 'none' && brightness === 0 && contrast === 0) return;
+
+            const imgData = targetCtx.getImageData(0, 0, w, h);
+            const data = imgData.data;
+            const factor = (259 * (contrast + 255)) / (255 * (259 - contrast));
+
+            for (let i = 0; i < data.length; i += 4) {
+                let r = data[i];
+                let g = data[i + 1];
+                let b = data[i + 2];
+
+                // Brightness & Contrast
+                r = factor * (r + brightness - 128) + 128;
+                g = factor * (g + brightness - 128) + 128;
+                b = factor * (b + brightness - 128) + 128;
+
+                // Presets
+                if (preset === 'sepia') {
+                    const tr = 0.393 * r + 0.769 * g + 0.189 * b;
+                    const tg = 0.349 * r + 0.686 * g + 0.168 * b;
+                    const tb = 0.272 * r + 0.534 * g + 0.131 * b;
+                    r = tr; g = tg; b = tb;
+                } else if (preset === 'mono') {
+                    const avg = (r + g + b) / 3;
+                    r = g = b = avg > 128 ? 255 : 0;
+                } else if (preset === 'posterize') {
+                    r = Math.floor(r / 64) * 64;
+                    g = Math.floor(g / 64) * 64;
+                    b = Math.floor(b / 64) * 64;
+                } else if (preset === 'invert') {
+                    r = 255 - r;
+                    g = 255 - g;
+                    b = 255 - b;
+                }
+
+                data[i] = Math.min(255, Math.max(0, r));
+                data[i + 1] = Math.min(255, Math.max(0, g));
+                data[i + 2] = Math.min(255, Math.max(0, b));
+            }
+            targetCtx.putImageData(imgData, 0, 0);
+        }
+
+        // HALFTONE ENGINE
+        function applyHalftoneEngine(targetCtx, imgData, w, h) {
+            const style = document.getElementById('halftoneStyleSelect').value;
+            const size = parseInt(document.getElementById('halftoneSize').value);
+            const bgColor = document.getElementById('bgColorPicker').value;
+            const inkColor = document.getElementById('dotColorPicker').value;
+
+            targetCtx.fillStyle = bgColor;
+            targetCtx.fillRect(0, 0, w, h);
+            targetCtx.fillStyle = inkColor;
+
+            const data = imgData.data;
+
+            for (let y = 0; y < h; y += size) {
+                for (let x = 0; x < w; x += size) {
+                    const idx = (y * w + x) * 4;
+                    const brightness = (data[idx] + data[idx + 1] + data[idx + 2]) / (3 * 255);
+                    const radius = (1 - brightness) * (size / 2);
+
+                    if (radius > 0.5) {
+                        targetCtx.beginPath();
+                        if (style === 'grid') {
+                            targetCtx.arc(x + size / 2, y + size / 2, radius, 0, Math.PI * 2);
+                            targetCtx.fill();
+                        } else if (style === 'lines') {
+                            targetCtx.fillRect(x, y, size, radius * 1.5);
+                        } else if (style === 'radial') {
+                            targetCtx.arc(x, y, radius, 0, Math.PI * 2);
+                            targetCtx.stroke();
+                        }
+                    }
+                }
+            }
         }
 
         // STIPPLE ENGINE
@@ -634,8 +787,30 @@
             if (w > 0 && h > 0) {
                 ctx.clearRect(0, 0, w, h);
 
-                // 1. Render Offscreen Base
-                ctx.drawImage(offCanvas, 0, 0, w, h);
+                // 1. Render Offscreen Base with optional Image Motion
+                const imgAnim = document.getElementById('imgAnimEffectSelect').value;
+                const imgSpeed = parseFloat(document.getElementById('imgAnimSpeed').value);
+
+                ctx.save();
+                if (imgAnim === 'pulse') {
+                    const scale = 1 + Math.sin(time * 3 * imgSpeed) * 0.05;
+                    ctx.translate(w / 2, h / 2);
+                    ctx.scale(scale, scale);
+                    ctx.translate(-w / 2, -h / 2);
+                } else if (imgAnim === 'glitch' && Math.random() < 0.15) {
+                    const sliceY = Math.random() * h;
+                    const sliceH = Math.random() * 40;
+                    ctx.drawImage(offCanvas, 0, 0, w, h);
+                    ctx.drawImage(offCanvas, (Math.random() - 0.5) * 20, sliceY, w, sliceH, 0, sliceY, w, sliceH);
+                } else if (imgAnim === 'wave') {
+                    const shift = Math.sin(time * 4 * imgSpeed) * 10;
+                    ctx.drawImage(offCanvas, shift, 0, w, h);
+                }
+                
+                if (imgAnim !== 'glitch') {
+                    ctx.drawImage(offCanvas, 0, 0, w, h);
+                }
+                ctx.restore();
 
                 // 2. Render Animated Text Overlay
                 if (document.getElementById('showTextToggle').checked) {
@@ -694,8 +869,8 @@
             // Live Range Sliders
             const sliders = [
                 'dotDensity', 'minDotSize', 'maxDotSize', 'imgAnimSpeed',
-                'ditherScale', 'ditherThreshold', 'waveDistort', 'scanlineIntensity',
-                'chromaticAberration', 'bloomGlow', 'blurRadius', 'textSize', 'textPosX', 'textPosY'
+                'ditherScale', 'ditherThreshold', 'halftoneSize', 'brightnessLevel', 'contrastLevel',
+                'waveDistort', 'scanlineIntensity', 'chromaticAberration', 'bloomGlow', 'blurRadius', 'textSize', 'textPosX', 'textPosY'
             ];
 
             sliders.forEach(id => {
@@ -710,7 +885,7 @@
             });
 
             // Toggles & Selects
-            ['enableStippleToggle', 'enableDitherToggle', 'showTextToggle', 'ditherTypeSelect', 'imgAnimEffectSelect', 'textFontSelect', 'textAnimEffectSelect', 'bgColorPicker', 'dotColorPicker', 'textColorPicker', 'textGlowColorPicker', 'textInput'].forEach(id => {
+            ['enableStippleToggle', 'enableDitherToggle', 'enableHalftoneToggle', 'showTextToggle', 'ditherTypeSelect', 'halftoneStyleSelect', 'tonePresetSelect', 'imgAnimEffectSelect', 'textFontSelect', 'textAnimEffectSelect', 'bgColorPicker', 'dotColorPicker', 'textColorPicker', 'textGlowColorPicker', 'textInput'].forEach(id => {
                 const el = document.getElementById(id);
                 if (el) el.addEventListener('change', renderStaticImageBuffer);
             });
@@ -781,7 +956,11 @@
             document.getElementById('maxDotSize').value = 3.5;
             document.getElementById('enableStippleToggle').checked = true;
             document.getElementById('enableDitherToggle').checked = false;
+            document.getElementById('enableHalftoneToggle').checked = false;
             document.getElementById('showTextToggle').checked = true;
+            document.getElementById('tonePresetSelect').value = 'none';
+            document.getElementById('brightnessLevel').value = 0;
+            document.getElementById('contrastLevel').value = 0;
             renderStaticImageBuffer();
         }
 
