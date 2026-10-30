@@ -1,53 +1,47 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="h-full bg-slate-50 text-slate-800">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Stipple Studio Image Editor</title>
-    <!-- Tailwind CSS -->
+    <title>Stipple Studio</title>
+    <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Font Awesome Icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Playfair+Display:ital,wght@0,700;1,400&family=Space+Grotesk:wght@500;700&family=Cinzel:wght@600&display=swap" rel="stylesheet">
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     <style>
         body {
             font-family: 'Plus Jakarta Sans', sans-serif;
-            background-color: #f8fafc;
-            color: #0f172a;
         }
-
         .mono {
             font-family: 'JetBrains Mono', monospace;
         }
-
-        /* Modern Sleek Controls */
-        .modern-btn {
-            background-color: #ffffff;
-            color: #0f172a;
-            border: 1px solid #e2e8f0;
-            border-radius: 8px;
-            box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-            transition: all 0.15s ease-in-out;
+        
+        /* Custom styled scrollbars */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
         }
-        .modern-btn:hover {
-            background-color: #f1f5f9;
-            border-color: #cbd5e1;
+        ::-webkit-scrollbar-track {
+            background: transparent;
         }
-        .modern-btn:active, .modern-btn.active {
-            background-color: #0f172a;
-            color: #ffffff;
-            border-color: #0f172a;
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 9999px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
         }
 
-        /* Clean Modern Range Sliders */
+        /* Modern Custom Range Inputs */
         input[type=range] {
             -webkit-appearance: none;
-            width: 100%;
             background: transparent;
+            width: 100%;
         }
         input[type=range]:focus {
             outline: none;
@@ -58,553 +52,670 @@
             cursor: pointer;
             background: #e2e8f0;
             border-radius: 9999px;
+            transition: background 0.2s;
+        }
+        input[type=range]:hover::-webkit-slider-runnable-track {
+            background: #cbd5e1;
         }
         input[type=range]::-webkit-slider-thumb {
             height: 18px;
             width: 18px;
             border-radius: 50%;
-            background: #ffffff;
-            border: 2px solid #0f172a;
+            background: #0f172a;
             cursor: pointer;
             -webkit-appearance: none;
             margin-top: -6px;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-            transition: transform 0.1s ease;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            transition: transform 0.15s ease, background-color 0.15s ease;
         }
         input[type=range]::-webkit-slider-thumb:hover {
             transform: scale(1.15);
+            background: #2563eb;
         }
 
-        /* Modern Grid Canvas Background */
-        .grid-bg {
-            background-color: #f1f5f9;
-            background-image: radial-gradient(#cbd5e1 1.2px, transparent 1.2px);
-            background-size: 16px 16px;
+        /* Dot Shape Active Button Style */
+        .dot-shape-btn.active {
+            background-color: #0f172a;
+            color: #ffffff;
+            border-color: #0f172a;
         }
 
-        /* Scrollbar */
-        ::-webkit-scrollbar {
-            width: 5px;
-            height: 5px;
+        /* Custom Toggle Switch */
+        .toggle-checkbox:checked {
+            right: 0;
+            background-color: #2563eb;
         }
-        ::-webkit-scrollbar-track {
-            background: transparent;
-        }
-        ::-webkit-scrollbar-thumb {
-            background: #cbd5e1;
-            border-radius: 9999px;
-        }
-
-        /* Canvas Frame */
-        .canvas-frame {
-            border: 1px solid #e2e8f0;
-            border-radius: 12px;
-            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.01);
-            background: #ffffff;
+        .toggle-checkbox:checked + .toggle-label {
+            background-color: #dbeafe;
         }
     </style>
 </head>
-<body class="h-screen flex flex-col overflow-hidden select-none bg-slate-50 text-slate-900">
+<body class="h-full flex flex-col overflow-hidden select-none bg-slate-50">
 
     <!-- TOP HEADER / NAVBAR -->
-    <header class="h-14 border-b border-slate-200 flex items-center justify-between px-6 bg-white z-20">
-        <div class="flex items-center space-x-2.5">
-            <div class="w-8 h-8 bg-slate-900 text-white rounded-lg flex items-center justify-center font-bold text-sm shadow-sm">
-                S
+    <header class="h-16 bg-white border-b border-slate-200 px-6 flex items-center justify-between z-20 shrink-0">
+        <div class="flex items-center space-x-3">
+            <div class="w-9 h-9 rounded-xl bg-slate-900 text-white flex items-center justify-center font-bold text-lg shadow-sm">
+                <i class="fa-solid fa-[#]">S</i>
             </div>
             <div>
-                <h1 class="text-sm font-bold tracking-tight text-slate-900">
-                    Stipple Studio
-                </h1>
-                <p class="text-[10px] text-slate-400 font-medium tracking-wide">IMAGE EFFECTS WORKSPACE</p>
+                <h1 class="font-bold text-slate-900 text-base leading-tight tracking-tight">Stipple Studio</h1>
+                <p class="text-xs text-slate-500 font-medium">Minimal Canvas & Art Engine</p>
             </div>
         </div>
 
-        <!-- Action Controls Bar -->
-        <div class="flex items-center space-x-2">
-            <label class="modern-btn px-3 py-1.5 text-xs font-semibold cursor-pointer flex items-center gap-2">
-                <i class="fa-solid fa-arrow-up-from-bracket text-slate-500"></i>
-                <span>Upload</span>
-                <input type="file" id="imageInput" accept="image/*" class="hidden">
+        <div class="flex items-center space-x-3">
+            <label for="imageInput" class="cursor-pointer inline-flex items-center space-x-2 px-3.5 py-2 text-xs font-semibold rounded-lg border border-slate-200 text-slate-700 bg-white hover:bg-slate-50 hover:border-slate-300 transition shadow-sm">
+                <i class="fa-solid fa-upload text-slate-500"></i>
+                <span>Open Image</span>
             </label>
+            <input type="file" id="imageInput" accept="image/*" class="hidden">
 
-            <button id="compareBtn" class="modern-btn px-3 py-1.5 text-xs font-semibold flex items-center gap-2">
+            <button id="compareBtn" class="inline-flex items-center space-x-2 px-3.5 py-2 text-xs font-semibold rounded-lg border border-slate-200 text-slate-700 bg-white hover:bg-slate-50 hover:border-slate-300 transition shadow-sm">
                 <i class="fa-solid fa-eye text-slate-500"></i>
-                <span>Compare</span>
+                <span>Hold Original</span>
             </button>
 
-            <button id="resetBtn" class="modern-btn px-3 py-1.5 text-xs font-semibold flex items-center gap-2">
+            <button id="resetBtn" class="inline-flex items-center space-x-2 px-3.5 py-2 text-xs font-semibold rounded-lg border border-slate-200 text-slate-700 bg-white hover:bg-slate-50 hover:border-slate-300 transition shadow-sm">
                 <i class="fa-solid fa-rotate-left text-slate-500"></i>
                 <span>Reset</span>
             </button>
 
-            <button id="exportBtn" class="modern-btn px-4 py-1.5 text-xs font-semibold bg-slate-900 text-white hover:bg-slate-800 border-slate-900 flex items-center gap-2">
+            <button id="exportBtn" class="inline-flex items-center space-x-2 px-4 py-2 text-xs font-semibold rounded-lg bg-blue-600 hover:bg-blue-700 text-white transition shadow-sm">
                 <i class="fa-solid fa-download"></i>
                 <span>Export Image</span>
             </button>
         </div>
     </header>
 
-    <!-- MAIN STUDIO CONTAINER -->
-    <main class="flex-1 flex overflow-hidden">
+    <!-- MAIN STUDIO AREA -->
+    <div class="flex-1 flex overflow-hidden">
 
-        <!-- LEFT CONTROL SIDEBAR -->
-        <aside class="w-80 md:w-88 border-r border-slate-200 bg-white flex flex-col z-10 shadow-sm">
+        <!-- LEFT SIDEBAR: CONTROL PANELS -->
+        <aside class="w-80 md:w-96 bg-white border-r border-slate-200 flex flex-col shrink-0 z-10">
             
-            <!-- STUDIO NAVIGATION TABS -->
-            <nav class="p-2 border-b border-slate-200 bg-slate-50/50">
-                <div class="flex bg-slate-200/60 p-1 rounded-lg text-xs font-semibold space-x-1">
-                    <button class="tab-btn flex-1 py-1.5 rounded-md text-slate-600 hover:text-slate-900 transition-all active bg-white text-slate-900 shadow-sm" data-tab="stipple">
-                        Stipple
-                    </button>
-                    <button class="tab-btn flex-1 py-1.5 rounded-md text-slate-600 hover:text-slate-900 transition-all" data-tab="dither">
-                        Dither
-                    </button>
-                    <button class="tab-btn flex-1 py-1.5 rounded-md text-slate-600 hover:text-slate-900 transition-all" data-tab="distort">
-                        Warp
-                    </button>
-                    <button class="tab-btn flex-1 py-1.5 rounded-md text-slate-600 hover:text-slate-900 transition-all" data-tab="glow">
-                        Glow
-                    </button>
-                    <button class="tab-btn flex-1 py-1.5 rounded-md text-slate-600 hover:text-slate-900 transition-all" data-tab="text">
-                        Type
-                    </button>
+            <!-- SEGMENTED TAB BUTTONS -->
+            <div class="p-4 border-b border-slate-100 bg-slate-50/50">
+                <div class="grid grid-cols-5 gap-1 p-1 bg-slate-200/60 rounded-xl text-xs font-medium text-slate-600">
+                    <button class="tab-btn py-1.5 rounded-lg text-center transition font-semibold bg-white text-slate-900 shadow-sm" onclick="switchTab('stipple', this)">Stipple</button>
+                    <button class="tab-btn py-1.5 rounded-lg text-center transition font-semibold hover:text-slate-900" onclick="switchTab('dither', this)">Dither</button>
+                    <button class="tab-btn py-1.5 rounded-lg text-center transition font-semibold hover:text-slate-900" onclick="switchTab('distort', this)">Warp</button>
+                    <button class="tab-btn py-1.5 rounded-lg text-center transition font-semibold hover:text-slate-900" onclick="switchTab('glow', this)">Glow</button>
+                    <button class="tab-btn py-1.5 rounded-lg text-center transition font-semibold hover:text-slate-900" onclick="switchTab('text', this)">Type</button>
                 </div>
-            </nav>
+            </div>
 
-            <!-- TAB CONTENT PANELS -->
-            <div class="flex-1 overflow-y-auto p-5 space-y-5">
+            <!-- TAB CONTENT CONTAINER -->
+            <div class="flex-1 overflow-y-auto p-5 space-y-6">
 
-                <!-- TAB 1: STIPPLE -->
-                <div id="panel-stipple" class="space-y-5">
-                    
-                    <!-- Toggle Stipple Engine Header -->
-                    <div class="p-3.5 bg-slate-900 text-white rounded-xl flex justify-between items-center shadow-sm">
-                        <div class="flex items-center gap-2.5">
-                            <i class="fa-solid fa-sliders text-sm text-slate-300"></i>
-                            <span class="text-xs font-semibold tracking-wide">Enable Stipple Effect</span>
+                <!-- 1. STIPPLE TAB -->
+                <div id="panel-stipple" class="tab-panel space-y-5">
+                    <!-- Enable Toggle -->
+                    <div class="p-3.5 bg-slate-50 rounded-xl border border-slate-200/80 flex items-center justify-between">
+                        <span class="text-xs font-bold text-slate-800">Enable Stipple Engine</span>
+                        <input type="checkbox" id="enableStippleToggle" checked class="w-4 h-4 text-blue-600 rounded border-slate-300 focus:ring-blue-500 cursor-pointer">
+                    </div>
+
+                    <!-- Density -->
+                    <div class="space-y-2">
+                        <div class="flex justify-between items-center text-xs">
+                            <label for="dotDensity" class="font-semibold text-slate-700">Dot Density</label>
+                            <span id="dotDensityVal" class="mono text-[11px] font-medium bg-slate-100 px-2 py-0.5 rounded text-slate-600">80</span>
                         </div>
-                        <label class="relative inline-flex items-center cursor-pointer">
-                            <input type="checkbox" id="enableStippleToggle" checked class="sr-only peer">
-                            <div class="w-9 h-5 bg-slate-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-slate-500"></div>
-                        </label>
+                        <input type="range" id="dotDensity" min="10" max="250" value="80">
                     </div>
 
-                    <!-- Size Slider -->
-                    <div class="flex flex-col space-y-2">
-                        <div class="flex justify-between items-center text-xs font-semibold text-slate-700">
-                            <span>Dot Density</span>
-                            <span id="val-size" class="mono text-slate-500 bg-slate-100 px-1.5 py-0.5 rounded">1.0</span>
-                        </div>
-                        <input type="range" id="slider-size" min="0.2" max="3.0" step="0.1" value="1.0">
-                    </div>
-
-                    <!-- Contrast Slider -->
-                    <div class="flex flex-col space-y-2">
-                        <div class="flex justify-between items-center text-xs font-semibold text-slate-700">
-                            <span>Contrast</span>
-                            <span id="val-contrast" class="mono text-slate-500 bg-slate-100 px-1.5 py-0.5 rounded">1.0</span>
-                        </div>
-                        <input type="range" id="slider-contrast" min="0.2" max="3.0" step="0.1" value="1.0">
-                    </div>
-
-                    <!-- Brightness Slider -->
-                    <div class="flex flex-col space-y-2">
-                        <div class="flex justify-between items-center text-xs font-semibold text-slate-700">
-                            <span>Brightness</span>
-                            <span id="val-brightness" class="mono text-slate-500 bg-slate-100 px-1.5 py-0.5 rounded">1.0</span>
-                        </div>
-                        <input type="range" id="slider-brightness" min="0.2" max="2.5" step="0.1" value="1.0">
-                    </div>
-
-                    <!-- Stipple Intensity -->
-                    <div class="flex flex-col space-y-2">
-                        <div class="flex justify-between items-center text-xs font-semibold text-slate-700">
-                            <span>Threshold</span>
-                            <span id="val-stipple" class="mono text-slate-500 bg-slate-100 px-1.5 py-0.5 rounded">128</span>
-                        </div>
-                        <input type="range" id="slider-stipple" min="0" max="255" step="1" value="128">
-                    </div>
-
-                    <!-- Dot Shape Presets -->
-                    <div class="flex flex-col space-y-2 pt-3 border-t border-slate-100">
-                        <span class="text-xs font-semibold text-slate-500">Dot Shape</span>
-                        <div class="grid grid-cols-3 gap-2">
-                            <button class="modern-btn py-1.5 text-xs font-semibold rounded-lg dot-shape-btn active" data-shape="circle">Circle</button>
-                            <button class="modern-btn py-1.5 text-xs font-semibold rounded-lg dot-shape-btn" data-shape="square">Square</button>
-                            <button class="modern-btn py-1.5 text-xs font-semibold rounded-lg dot-shape-btn" data-shape="cross">Cross</button>
-                        </div>
-                    </div>
-
-                    <!-- Color Overrides -->
-                    <div class="flex flex-col space-y-2 pt-3 border-t border-slate-100">
-                        <span class="text-xs font-semibold text-slate-500">Color Palette</span>
-                        <div class="grid grid-cols-2 gap-2.5">
-                            <div class="flex items-center space-x-2 border border-slate-200 rounded-lg p-2 bg-slate-50">
-                                <input type="color" id="bgColorPicker" value="#ffffff" class="w-6 h-6 border-0 rounded cursor-pointer p-0 bg-transparent">
-                                <span class="text-xs font-semibold text-slate-700">Background</span>
-                            </div>
-                            <div class="flex items-center space-x-2 border border-slate-200 rounded-lg p-2 bg-slate-50">
-                                <input type="color" id="dotColorPicker" value="#000000" class="w-6 h-6 border-0 rounded cursor-pointer p-0 bg-transparent">
-                                <span class="text-xs font-semibold text-slate-700">Foreground</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Image Animation Options -->
-                    <div class="flex flex-col space-y-3 pt-3 border-t border-slate-100">
-                        <span class="text-xs font-semibold text-slate-500">Image Motion</span>
-                        <select id="imgAnimEffectSelect" class="w-full bg-white border border-slate-200 rounded-lg p-2 text-xs font-semibold text-slate-800 focus:outline-none focus:border-slate-400">
-                            <option value="none">Static (No Animation)</option>
-                            <option value="scanline">Scanline Glitch</option>
-                            <option value="pulse">Pulse Zoom</option>
-                            <option value="ripple">Ripple Wave</option>
-                            <option value="drift">Stipple Drift</option>
-                        </select>
-                        <div class="flex flex-col space-y-2">
-                            <div class="flex justify-between items-center text-xs font-semibold text-slate-700">
-                                <span>Motion Speed</span>
-                                <span id="val-motionSpeed" class="mono text-slate-500 bg-slate-100 px-1.5 py-0.5 rounded">1.0x</span>
-                            </div>
-                            <input type="range" id="slider-motionSpeed" min="0.2" max="3.0" step="0.1" value="1.0">
-                        </div>
-                    </div>
-                </div>
-
-                <!-- TAB 2: DITHER -->
-                <div id="panel-dither" class="space-y-5 hidden">
-                    <div class="p-3.5 bg-slate-900 text-white rounded-xl flex justify-between items-center shadow-sm">
-                        <div class="flex items-center gap-2.5">
-                            <i class="fa-solid fa-border-all text-sm text-slate-300"></i>
-                            <span class="text-xs font-semibold tracking-wide">Enable Dithering</span>
-                        </div>
-                        <label class="relative inline-flex items-center cursor-pointer">
-                            <input type="checkbox" id="enableDitherToggle" class="sr-only peer">
-                            <div class="w-9 h-5 bg-slate-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-slate-500"></div>
-                        </label>
-                    </div>
-
-                    <div class="flex flex-col space-y-2">
-                        <span class="text-xs font-semibold text-slate-500">Dither Type</span>
-                        <select id="ditherTypeSelect" class="w-full bg-white border border-slate-200 rounded-lg p-2 text-xs font-semibold text-slate-800">
-                            <option value="bayer">Bayer Matrix 4x4</option>
-                            <option value="halftone">Halftone Print Dots</option>
-                            <option value="floyd">Floyd-Steinberg Diffusion</option>
-                            <option value="crosshatch">Crosshatch Lines</option>
-                        </select>
-                    </div>
-
-                    <div class="flex flex-col space-y-2">
-                        <div class="flex justify-between items-center text-xs font-semibold text-slate-700">
-                            <span>Grid Scale</span>
-                            <span id="val-ditherScale" class="mono text-slate-500 bg-slate-100 px-1.5 py-0.5 rounded">4px</span>
-                        </div>
-                        <input type="range" id="slider-ditherScale" min="2" max="16" step="1" value="4">
-                    </div>
-
-                    <div class="flex flex-col space-y-2">
-                        <div class="flex justify-between items-center text-xs font-semibold text-slate-700">
-                            <span>Threshold Level</span>
-                            <span id="val-ditherThreshold" class="mono text-slate-500 bg-slate-100 px-1.5 py-0.5 rounded">128</span>
-                        </div>
-                        <input type="range" id="slider-ditherThreshold" min="1" max="254" step="1" value="128">
-                    </div>
-                </div>
-
-                <!-- TAB 3: WARP / DISTORT -->
-                <div id="panel-distort" class="space-y-5 hidden">
-                    <div class="flex flex-col space-y-2">
-                        <div class="flex justify-between items-center text-xs font-semibold text-slate-700">
-                            <span>Wave Distortion</span>
-                            <span id="val-waveDistort" class="mono text-slate-500 bg-slate-100 px-1.5 py-0.5 rounded">0</span>
-                        </div>
-                        <input type="range" id="slider-waveDistort" min="0" max="50" step="1" value="0">
-                    </div>
-
-                    <div class="flex flex-col space-y-2">
-                        <div class="flex justify-between items-center text-xs font-semibold text-slate-700">
-                            <span>CRT Scanline Overlay</span>
-                            <span id="val-scanlines" class="mono text-slate-500 bg-slate-100 px-1.5 py-0.5 rounded">0</span>
-                        </div>
-                        <input type="range" id="slider-scanlines" min="0" max="100" step="1" value="0">
-                    </div>
-
-                    <div class="flex flex-col space-y-2">
-                        <div class="flex justify-between items-center text-xs font-semibold text-slate-700">
-                            <span>RGB Chromatic Shift</span>
-                            <span id="val-rgbShift" class="mono text-slate-500 bg-slate-100 px-1.5 py-0.5 rounded">0px</span>
-                        </div>
-                        <input type="range" id="slider-rgbShift" min="0" max="20" step="1" value="0">
-                    </div>
-                </div>
-
-                <!-- TAB 4: GLOW -->
-                <div id="panel-glow" class="space-y-5 hidden">
-                    <div class="flex flex-col space-y-2">
-                        <div class="flex justify-between items-center text-xs font-semibold text-slate-700">
-                            <span>Bloom Glow</span>
-                            <span id="val-bloom" class="mono text-slate-500 bg-slate-100 px-1.5 py-0.5 rounded">0</span>
-                        </div>
-                        <input type="range" id="slider-bloom" min="0" max="50" step="1" value="0">
-                    </div>
-
-                    <div class="flex flex-col space-y-2">
-                        <div class="flex justify-between items-center text-xs font-semibold text-slate-700">
-                            <span>Gaussian Blur</span>
-                            <span id="val-blur" class="mono text-slate-500 bg-slate-100 px-1.5 py-0.5 rounded">0px</span>
-                        </div>
-                        <input type="range" id="slider-blur" min="0" max="20" step="1" value="0">
-                    </div>
-
-                    <div class="flex flex-col space-y-3 pt-3 border-t border-slate-100">
-                        <span class="text-xs font-semibold text-slate-500">Adjustments</span>
+                    <!-- Min / Max Dot Size -->
+                    <div class="grid grid-cols-2 gap-4">
                         <div class="space-y-2">
-                            <label class="flex items-center space-x-2.5 text-xs font-semibold text-slate-700 cursor-pointer">
-                                <input type="checkbox" id="invertColors" class="w-4 h-4 rounded border-slate-300 text-slate-900 focus:ring-slate-500">
-                                <span>Invert Colors</span>
-                            </label>
-                            <label class="flex items-center space-x-2.5 text-xs font-semibold text-slate-700 cursor-pointer">
-                                <input type="checkbox" id="sepiaToggle" class="w-4 h-4 rounded border-slate-300 text-slate-900 focus:ring-slate-500">
-                                <span>Vintage Sepia Filter</span>
-                            </label>
+                            <div class="flex justify-between items-center text-xs">
+                                <label for="minDotSize" class="font-semibold text-slate-700">Min Size</label>
+                                <span id="minDotSizeVal" class="mono text-[11px] font-medium bg-slate-100 px-1.5 py-0.5 rounded text-slate-600">1.0</span>
+                            </div>
+                            <input type="range" id="minDotSize" min="0.5" max="5" step="0.1" value="1.0">
+                        </div>
+                        <div class="space-y-2">
+                            <div class="flex justify-between items-center text-xs">
+                                <label for="maxDotSize" class="font-semibold text-slate-700">Max Size</label>
+                                <span id="maxDotSizeVal" class="mono text-[11px] font-medium bg-slate-100 px-1.5 py-0.5 rounded text-slate-600">3.5</span>
+                            </div>
+                            <input type="range" id="maxDotSize" min="1" max="10" step="0.1" value="3.5">
+                        </div>
+                    </div>
+
+                    <!-- Dot Shape Picker -->
+                    <div class="space-y-2">
+                        <label class="text-xs font-semibold text-slate-700">Dot Geometry</label>
+                        <div class="grid grid-cols-4 gap-2">
+                            <button data-shape="circle" class="dot-shape-btn active py-2 border border-slate-200 rounded-lg text-xs font-medium hover:border-slate-300 transition">Circle</button>
+                            <button data-shape="square" class="dot-shape-btn py-2 border border-slate-200 rounded-lg text-xs font-medium hover:border-slate-300 transition">Square</button>
+                            <button data-shape="cross" class="dot-shape-btn py-2 border border-slate-200 rounded-lg text-xs font-medium hover:border-slate-300 transition">Cross</button>
+                            <button data-shape="ring" class="dot-shape-btn py-2 border border-slate-200 rounded-lg text-xs font-medium hover:border-slate-300 transition">Ring</button>
+                        </div>
+                    </div>
+
+                    <!-- Image Animation Motion -->
+                    <div class="space-y-3 pt-3 border-t border-slate-100">
+                        <label class="text-xs font-bold text-slate-800 uppercase tracking-wider">Image Motion FX</label>
+                        <select id="imgAnimEffectSelect" class="w-full text-xs font-medium border border-slate-200 rounded-lg p-2.5 bg-white text-slate-800 focus:outline-none focus:border-blue-500">
+                            <option value="none">Static Image (No Motion)</option>
+                            <option value="glitch">Scanline Cyber Glitch</option>
+                            <option value="pulse">Breathing Zoom Pulse</option>
+                            <option value="halftone">Halftone Rotation</option>
+                            <option value="wave">Ripple Sine Wave</option>
+                            <option value="drift">Stipple Position Drift</option>
+                        </select>
+
+                        <div class="space-y-2">
+                            <div class="flex justify-between items-center text-xs">
+                                <label for="imgAnimSpeed" class="font-semibold text-slate-700">Motion Tempo</label>
+                                <span id="imgAnimSpeedVal" class="mono text-[11px] font-medium bg-slate-100 px-1.5 py-0.5 rounded text-slate-600">1.0x</span>
+                            </div>
+                            <input type="range" id="imgAnimSpeed" min="0.1" max="3" step="0.1" value="1.0">
+                        </div>
+                    </div>
+
+                    <!-- Colors -->
+                    <div class="grid grid-cols-2 gap-4 pt-3 border-t border-slate-100">
+                        <div class="space-y-1.5">
+                            <label for="bgColorPicker" class="text-xs font-semibold text-slate-700">Canvas Color</label>
+                            <div class="flex items-center space-x-2">
+                                <input type="color" id="bgColorPicker" value="#ffffff" class="w-8 h-8 rounded border border-slate-200 cursor-pointer">
+                                <span class="text-xs font-medium text-slate-600 font-mono">Background</span>
+                            </div>
+                        </div>
+                        <div class="space-y-1.5">
+                            <label for="dotColorPicker" class="text-xs font-semibold text-slate-700">Ink Color</label>
+                            <div class="flex items-center space-x-2">
+                                <input type="color" id="dotColorPicker" value="#0f172a" class="w-8 h-8 rounded border border-slate-200 cursor-pointer">
+                                <span class="text-xs font-medium text-slate-600 font-mono">Foreground</span>
+                            </div>
                         </div>
                     </div>
                 </div>
 
-                <!-- TAB 5: TYPE / ANIMATED TEXT -->
-                <div id="panel-text" class="space-y-5 hidden">
-                    
-                    <div class="p-3.5 bg-slate-900 text-white rounded-xl flex justify-between items-center shadow-sm">
-                        <span class="text-xs font-semibold tracking-wide">Show Animated Text</span>
-                        <label class="relative inline-flex items-center cursor-pointer">
-                            <input type="checkbox" id="showTextToggle" checked class="sr-only peer">
-                            <div class="w-9 h-5 bg-slate-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-slate-500"></div>
-                        </label>
+                <!-- 2. DITHER TAB -->
+                <div id="panel-dither" class="tab-panel space-y-5 hidden">
+                    <div class="p-3.5 bg-slate-50 rounded-xl border border-slate-200/80 flex items-center justify-between">
+                        <span class="text-xs font-bold text-slate-800">Enable Matrix Dithering</span>
+                        <input type="checkbox" id="enableDitherToggle" class="w-4 h-4 text-blue-600 rounded border-slate-300 focus:ring-blue-500 cursor-pointer">
                     </div>
 
-                    <div class="flex flex-col space-y-1.5">
-                        <span class="text-xs font-semibold text-slate-500">Text Content</span>
-                        <input type="text" id="textOverlayInput" value="STIPPLE STUDIO" class="border border-slate-200 rounded-lg p-2 text-xs font-semibold text-slate-900 focus:outline-none focus:border-slate-400">
-                    </div>
-
-                    <div class="flex flex-col space-y-2">
-                        <span class="text-xs font-semibold text-slate-500">Font Family</span>
-                        <select id="textFontSelect" class="w-full bg-white border border-slate-200 rounded-lg p-2 text-xs font-semibold text-slate-800">
-                            <option value="Plus Jakarta Sans">Plus Jakarta Sans (Modern Clean)</option>
-                            <option value="Inter">Inter (Sans)</option>
-                            <option value="Courier Prime">Courier Prime (Mono)</option>
-                            <option value="Impact">Impact (Bold Display)</option>
+                    <div class="space-y-2">
+                        <label for="ditherTypeSelect" class="text-xs font-semibold text-slate-700">Matrix Pattern</label>
+                        <select id="ditherTypeSelect" class="w-full text-xs font-medium border border-slate-200 rounded-lg p-2.5 bg-white text-slate-800 focus:outline-none focus:border-blue-500">
+                            <option value="bayer">Bayer 4x4 Matrix</option>
+                            <option value="halftone">Newspaper Halftone Dot</option>
+                            <option value="floyd">Floyd-Steinberg Diffusion</option>
+                            <option value="crosshatch">Crosshatch Ink Lines</option>
                         </select>
                     </div>
 
-                    <div class="flex flex-col space-y-2">
-                        <span class="text-xs font-semibold text-slate-500">Animation Effect</span>
-                        <select id="textAnimEffectSelect" class="w-full bg-white border border-slate-200 rounded-lg p-2 text-xs font-semibold text-slate-800">
-                            <option value="pulse">Pulse Glow</option>
+                    <div class="space-y-2">
+                        <div class="flex justify-between items-center text-xs">
+                            <label for="ditherScale" class="font-semibold text-slate-700">Pattern Scale</label>
+                            <span id="ditherScaleVal" class="mono text-[11px] font-medium bg-slate-100 px-1.5 py-0.5 rounded text-slate-600">4px</span>
+                        </div>
+                        <input type="range" id="ditherScale" min="1" max="16" value="4">
+                    </div>
+
+                    <div class="space-y-2">
+                        <div class="flex justify-between items-center text-xs">
+                            <label for="ditherThreshold" class="font-semibold text-slate-700">Threshold Cutoff</label>
+                            <span id="ditherThresholdVal" class="mono text-[11px] font-medium bg-slate-100 px-1.5 py-0.5 rounded text-slate-600">128</span>
+                        </div>
+                        <input type="range" id="ditherThreshold" min="0" max="255" value="128">
+                    </div>
+                </div>
+
+                <!-- 3. WARP / DISTORT TAB -->
+                <div id="panel-distort" class="tab-panel space-y-5 hidden">
+                    <div class="space-y-2">
+                        <div class="flex justify-between items-center text-xs">
+                            <label for="waveDistort" class="font-semibold text-slate-700">Sine Wave Ripple</label>
+                            <span id="waveDistortVal" class="mono text-[11px] font-medium bg-slate-100 px-1.5 py-0.5 rounded text-slate-600">0px</span>
+                        </div>
+                        <input type="range" id="waveDistort" min="0" max="50" value="0">
+                    </div>
+
+                    <div class="space-y-2">
+                        <div class="flex justify-between items-center text-xs">
+                            <label for="scanlineIntensity" class="font-semibold text-slate-700">CRT Scanlines</label>
+                            <span id="scanlineIntensityVal" class="mono text-[11px] font-medium bg-slate-100 px-1.5 py-0.5 rounded text-slate-600">0%</span>
+                        </div>
+                        <input type="range" id="scanlineIntensity" min="0" max="100" value="0">
+                    </div>
+
+                    <div class="space-y-2">
+                        <div class="flex justify-between items-center text-xs">
+                            <label for="chromaticAberration" class="font-semibold text-slate-700">RGB Shift</label>
+                            <span id="chromaticAberrationVal" class="mono text-[11px] font-medium bg-slate-100 px-1.5 py-0.5 rounded text-slate-600">0px</span>
+                        </div>
+                        <input type="range" id="chromaticAberration" min="0" max="20" value="0">
+                    </div>
+                </div>
+
+                <!-- 4. GLOW TAB -->
+                <div id="panel-glow" class="tab-panel space-y-5 hidden">
+                    <div class="space-y-2">
+                        <div class="flex justify-between items-center text-xs">
+                            <label for="bloomGlow" class="font-semibold text-slate-700">Bloom Intensity</label>
+                            <span id="bloomGlowVal" class="mono text-[11px] font-medium bg-slate-100 px-1.5 py-0.5 rounded text-slate-600">0%</span>
+                        </div>
+                        <input type="range" id="bloomGlow" min="0" max="100" value="0">
+                    </div>
+
+                    <div class="space-y-2">
+                        <div class="flex justify-between items-center text-xs">
+                            <label for="blurRadius" class="font-semibold text-slate-700">Aura Blur Radius</label>
+                            <span id="blurRadiusVal" class="mono text-[11px] font-medium bg-slate-100 px-1.5 py-0.5 rounded text-slate-600">0px</span>
+                        </div>
+                        <input type="range" id="blurRadius" min="0" max="25" value="0">
+                    </div>
+                </div>
+
+                <!-- 5. TYPE TAB -->
+                <div id="panel-text" class="tab-panel space-y-5 hidden">
+                    <div class="p-3.5 bg-slate-50 rounded-xl border border-slate-200/80 flex items-center justify-between">
+                        <span class="text-xs font-bold text-slate-800">Show Text Overlay</span>
+                        <input type="checkbox" id="showTextToggle" checked class="w-4 h-4 text-blue-600 rounded border-slate-300 focus:ring-blue-500 cursor-pointer">
+                    </div>
+
+                    <div class="space-y-2">
+                        <label for="textInput" class="text-xs font-semibold text-slate-700">Text Prompt</label>
+                        <input type="text" id="textInput" value="STIPPLE STUDIO" class="w-full text-xs border border-slate-200 rounded-lg p-2.5 bg-white text-slate-800 focus:outline-none focus:border-blue-500 font-medium">
+                    </div>
+
+                    <div class="space-y-2">
+                        <label for="textFontSelect" class="text-xs font-semibold text-slate-700">Font Style</label>
+                        <select id="textFontSelect" class="w-full text-xs font-medium border border-slate-200 rounded-lg p-2.5 bg-white text-slate-800 focus:outline-none focus:border-blue-500">
+                            <option value="'Plus Jakarta Sans', sans-serif">Plus Jakarta Sans</option>
+                            <option value="'JetBrains Mono', monospace">JetBrains Mono</option>
+                            <option value="'Playfair Display', serif">Playfair Display</option>
+                            <option value="'Space Grotesk', sans-serif">Space Grotesk</option>
+                            <option value="'Cinzel', serif">Cinzel Serif</option>
+                        </select>
+                    </div>
+
+                    <div class="space-y-2">
+                        <label for="textAnimEffectSelect" class="text-xs font-semibold text-slate-700">Animation Motion</label>
+                        <select id="textAnimEffectSelect" class="w-full text-xs font-medium border border-slate-200 rounded-lg p-2.5 bg-white text-slate-800 focus:outline-none focus:border-blue-500">
                             <option value="typewriter">Typewriter Reveal</option>
-                            <option value="bounce">Bounce Wave</option>
+                            <option value="neon">Neon Glow Pulse</option>
+                            <option value="bounce">Rhythmic Bounce</option>
                             <option value="glitch">Cyber Glitch</option>
-                            <option value="float">Floating Sine</option>
-                            <option value="marquee">Marquee Slide</option>
+                            <option value="float">Floating Sine Wave</option>
+                            <option value="marquee">Continuous Marquee</option>
                         </select>
                     </div>
 
-                    <div class="flex flex-col space-y-2">
-                        <div class="flex justify-between items-center text-xs font-semibold text-slate-700">
-                            <span>Font Size</span>
-                            <span id="val-textSize" class="mono text-slate-500 bg-slate-100 px-1.5 py-0.5 rounded">36px</span>
+                    <div class="space-y-2">
+                        <div class="flex justify-between items-center text-xs">
+                            <label for="textSize" class="font-semibold text-slate-700">Font Size</label>
+                            <span id="textSizeVal" class="mono text-[11px] font-medium bg-slate-100 px-1.5 py-0.5 rounded text-slate-600">48px</span>
                         </div>
-                        <input type="range" id="slider-textSize" min="14" max="120" step="1" value="36">
+                        <input type="range" id="textSize" min="16" max="120" value="48">
                     </div>
 
-                    <div class="flex flex-col space-y-2">
-                        <div class="flex justify-between items-center text-xs font-semibold text-slate-700">
-                            <span>Vertical Position</span>
-                            <span id="val-textPosY" class="mono text-slate-500 bg-slate-100 px-1.5 py-0.5 rounded">50%</span>
-                        </div>
-                        <input type="range" id="slider-textPosY" min="10" max="90" step="1" value="50">
-                    </div>
-
-                    <div class="flex flex-col space-y-2 border-t border-slate-100 pt-3">
-                        <span class="text-xs font-semibold text-slate-500">Text Colors</span>
-                        <div class="grid grid-cols-2 gap-2.5">
-                            <div class="flex items-center space-x-2 border border-slate-200 rounded-lg p-2 bg-slate-50">
-                                <input type="color" id="textColorPicker" value="#000000" class="w-6 h-6 border-0 rounded cursor-pointer p-0 bg-transparent">
-                                <span class="text-xs font-semibold text-slate-700">Text Fill</span>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div class="space-y-2">
+                            <div class="flex justify-between items-center text-xs">
+                                <label for="textPosX" class="font-semibold text-slate-700">Position X</label>
+                                <span id="textPosXVal" class="mono text-[11px] font-medium bg-slate-100 px-1.5 py-0.5 rounded text-slate-600">50%</span>
                             </div>
-                            <div class="flex items-center space-x-2 border border-slate-200 rounded-lg p-2 bg-slate-50">
-                                <input type="color" id="textGlowColorPicker" value="#ffffff" class="w-6 h-6 border-0 rounded cursor-pointer p-0 bg-transparent">
-                                <span class="text-xs font-semibold text-slate-700">Glow Outline</span>
+                            <input type="range" id="textPosX" min="0" max="100" value="50">
+                        </div>
+                        <div class="space-y-2">
+                            <div class="flex justify-between items-center text-xs">
+                                <label for="textPosY" class="font-semibold text-slate-700">Position Y</label>
+                                <span id="textPosYVal" class="mono text-[11px] font-medium bg-slate-100 px-1.5 py-0.5 rounded text-slate-600">50%</span>
                             </div>
+                            <input type="range" id="textPosY" min="0" max="100" value="50">
                         </div>
                     </div>
 
+                    <div class="grid grid-cols-2 gap-4 pt-3 border-t border-slate-100">
+                        <div class="space-y-1.5">
+                            <label for="textColorPicker" class="text-xs font-semibold text-slate-700">Text Color</label>
+                            <input type="color" id="textColorPicker" value="#0f172a" class="w-8 h-8 rounded border border-slate-200 cursor-pointer">
+                        </div>
+                        <div class="space-y-1.5">
+                            <label for="textGlowColorPicker" class="text-xs font-semibold text-slate-700">Glow Aura</label>
+                            <input type="color" id="textGlowColorPicker" value="#3b82f6" class="w-8 h-8 rounded border border-slate-200 cursor-pointer">
+                        </div>
+                    </div>
                 </div>
 
             </div>
         </aside>
 
-        <!-- CENTER CANVAS WORKSPACE -->
-        <section class="flex-1 grid-bg flex items-center justify-center p-8 relative overflow-hidden">
+        <!-- MAIN CANVAS VIEWPORT -->
+        <main class="flex-1 bg-slate-100 relative flex items-center justify-center p-6 overflow-hidden">
             
-            <!-- Canvas Display Frame -->
-            <div class="canvas-frame max-w-full max-h-full flex items-center justify-center p-3 relative">
-                <canvas id="mainCanvas" class="max-w-full max-h-[75vh] object-contain rounded-md cursor-crosshair"></canvas>
+            <!-- Canvas Frame Box -->
+            <div id="canvasContainer" class="relative max-w-full max-h-full flex items-center justify-center bg-white rounded-2xl shadow-lg border border-slate-200/80 overflow-hidden">
+                <canvas id="mainCanvas" class="max-w-full max-h-[82vh] object-contain block"></canvas>
             </div>
 
-            <!-- Drag & Drop Overlay Indicator -->
-            <div id="dropZone" class="absolute inset-0 bg-white/95 backdrop-blur-md flex flex-col items-center justify-center hidden z-30 transition-all">
-                <div class="w-16 h-16 rounded-2xl bg-slate-900 text-white flex items-center justify-center text-2xl mb-4 shadow-lg">
-                    <i class="fa-solid fa-cloud-arrow-up"></i>
+            <!-- Drag & Drop Overlay Prompt -->
+            <div id="dropZone" class="absolute inset-0 bg-slate-900/40 backdrop-blur-sm hidden flex-col items-center justify-center text-white z-30 transition">
+                <div class="p-6 bg-white rounded-2xl shadow-xl text-center max-w-sm border border-slate-100">
+                    <div class="w-12 h-12 rounded-full bg-blue-50 text-blue-600 flex items-center justify-center mx-auto mb-3">
+                        <i class="fa-solid fa-cloud-arrow-up text-xl"></i>
+                    </div>
+                    <h3 class="text-base font-bold text-slate-900">Drop Image Here</h3>
+                    <p class="text-xs text-slate-500 mt-1">Supports JPG, PNG, WEBP and GIF formats</p>
                 </div>
-                <p class="font-bold text-base text-slate-900">Drop your image here</p>
-                <p class="text-xs text-slate-400 mt-1 font-medium">Supports PNG, JPG, WEBP</p>
             </div>
-        </section>
 
-    </main>
+        </main>
+    </div>
 
-    <!-- FOOTER STATUS BAR -->
-    <footer class="h-8 border-t border-slate-200 flex items-center justify-between px-6 bg-white text-xs font-medium text-slate-500">
-        <div class="flex items-center space-x-3 mono text-[11px]">
-            <span id="statusDim">DIMENSIONS: ---</span>
-            <span class="text-slate-300">|</span>
-            <span id="statusFps">FPS: 60</span>
-        </div>
-        <div class="text-[11px]">
-            <span>STIPPLE STUDIO EDITOR</span>
-        </div>
-    </footer>
-
-    <!-- JAVASCRIPT LOGIC ENGINE -->
+    <!-- JAVASCRIPT ARTWORK ENGINE -->
     <script>
-        // DOM ELEMENTS
+        // GLOBAL STATE & CANVAS REFERENCES
         const mainCanvas = document.getElementById('mainCanvas');
-        const ctx = mainCanvas.getContext('2d', { willReadFrequently: true });
+        const ctx = mainCanvas.getContext('2d');
 
-        // Offscreen static background canvas buffer
+        // Static Offscreen Processing Canvas
         const offCanvas = document.createElement('canvas');
-        const oCtx = offCanvas.getContext('2d', { willReadFrequently: true });
+        const offCtx = offCanvas.getContext('2d');
 
-        const imageInput = document.getElementById('imageInput');
-        const dropZone = document.getElementById('dropZone');
-
-        // STATE VARIABLES
-        let rawImage = null;
+        // Image State
+        let sourceImage = new Image();
+        let isImageLoaded = false;
         let isCompareMode = false;
-        let currentDotShape = 'circle';
         let animationFrameId = null;
-        let lastFrameTime = performance.now();
-        let frameCount = 0;
+        let animStartTime = performance.now();
+        let currentDotShape = 'circle';
 
-        // SLIDER CONTROL MAP
-        const sliders = {
-            size: document.getElementById('slider-size'),
-            contrast: document.getElementById('slider-contrast'),
-            brightness: document.getElementById('slider-brightness'),
-            stipple: document.getElementById('slider-stipple'),
-            motionSpeed: document.getElementById('slider-motionSpeed'),
-            ditherScale: document.getElementById('slider-ditherScale'),
-            ditherThreshold: document.getElementById('slider-ditherThreshold'),
-            waveDistort: document.getElementById('slider-waveDistort'),
-            scanlines: document.getElementById('slider-scanlines'),
-            rgbShift: document.getElementById('slider-rgbShift'),
-            bloom: document.getElementById('slider-bloom'),
-            blur: document.getElementById('slider-blur'),
-            textSize: document.getElementById('slider-textSize'),
-            textPosY: document.getElementById('slider-textPosY')
-        };
-
-        // SEEDED RANDOM GENERATOR (FOR STATIC STIPPLE)
-        function seededRandom(seed) {
-            const x = Math.sin(seed++) * 10000;
-            return x - Math.floor(x);
-        }
-
-        // INITIALIZATION
+        // INITIALIZATION ON LOAD
         window.addEventListener('load', () => {
-            initDefaultImage();
             setupEventListeners();
-            startAnimationLoop();
+            loadDefaultPlaceholder();
+            requestAnimationFrame(renderLoop);
         });
 
-        // GENERATE DEFAULT DEMO IMAGE
-        function initDefaultImage() {
-            const tempCanvas = document.createElement('canvas');
-            tempCanvas.width = 800;
-            tempCanvas.height = 800;
-            const tCtx = tempCanvas.getContext('2d');
+        // TAB SWITCHER
+        function switchTab(tabId, buttonEl) {
+            document.querySelectorAll('.tab-panel').forEach(panel => panel.classList.add('hidden'));
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('bg-white', 'text-slate-900', 'shadow-sm');
+                btn.classList.add('hover:text-slate-900');
+            });
 
-            // Draw abstract high-contrast gradient pattern
-            const grad = tCtx.createRadialGradient(400, 400, 50, 400, 400, 400);
-            grad.addColorStop(0, '#ffffff');
-            grad.addColorStop(0.5, '#888888');
-            grad.addColorStop(1, '#000000');
-            tCtx.fillStyle = grad;
-            tCtx.fillRect(0, 0, 800, 800);
+            document.getElementById(`panel-${tabId}`).classList.remove('hidden');
+            buttonEl.classList.add('bg-white', 'text-slate-900', 'shadow-sm');
+            buttonEl.classList.remove('hover:text-slate-900');
+        }
 
-            // Draw geometry typography
-            tCtx.fillStyle = '#000000';
-            tCtx.font = '900 120px Courier Prime';
-            tCtx.textAlign = 'center';
-            tCtx.fillText('STIPPLE', 400, 380);
-            tCtx.fillText('STUDIO', 400, 500);
-
-            const img = new Image();
-            img.onload = () => {
-                rawImage = img;
-                updateCanvasDimensions();
+        // LOAD DEFAULT PLACEHOLDER
+        function loadDefaultPlaceholder() {
+            const defaultSvg = `<svg xmlns="http://www.w3.org/2000/svg" width="800" height="800" viewBox="0 0 800 800">
+                <rect width="800" height="800" fill="#f8fafc"/>
+                <circle cx="400" cy="350" r="180" fill="#1e293b"/>
+                <circle cx="400" cy="350" r="120" fill="#38bdf8"/>
+                <circle cx="400" cy="350" r="60" fill="#f8fafc"/>
+                <path d="M 200 650 Q 400 500 600 650" stroke="#0f172a" stroke-width="24" fill="none" stroke-linecap="round"/>
+            </svg>`;
+            
+            sourceImage.crossOrigin = 'anonymous';
+            sourceImage.onload = () => {
+                isImageLoaded = true;
+                resizeCanvasToImage();
                 renderStaticImageBuffer();
             };
-            img.src = tempCanvas.toDataURL();
+            sourceImage.src = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(defaultSvg);
         }
 
-        // UPDATE CANVAS DIMENSIONS
-        function updateCanvasDimensions() {
-            if (!rawImage) return;
-            mainCanvas.width = rawImage.width;
-            mainCanvas.height = rawImage.height;
-            offCanvas.width = rawImage.width;
-            offCanvas.height = rawImage.height;
-
-            document.getElementById('statusDim').innerText = `DIMENSIONS: ${rawImage.width} x ${rawImage.height} PX`;
+        // RESIZE CANVASES
+        function resizeCanvasToImage() {
+            if (!isImageLoaded) return;
+            mainCanvas.width = sourceImage.naturalWidth || 800;
+            mainCanvas.height = sourceImage.naturalHeight || 800;
+            offCanvas.width = mainCanvas.width;
+            offCanvas.height = mainCanvas.height;
         }
 
-        // TAB SWITCHING LOGIC
-        function setupEventListeners() {
-            document.querySelectorAll('.tab-btn').forEach(btn => {
-                btn.addEventListener('click', (e) => {
-                    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active', 'bg-white', 'text-slate-900', 'shadow-sm'));
-                    document.querySelectorAll('[id^="panel-"]').forEach(p => p.classList.add('hidden'));
+        // STATIC IMAGE PROCESSING PIPELINE
+        function renderStaticImageBuffer() {
+            if (!isImageLoaded) return;
 
-                    e.target.classList.add('active', 'bg-white', 'text-slate-900', 'shadow-sm');
-                    const tabName = e.target.getAttribute('data-tab');
-                    document.getElementById(`panel-${tabName}`).classList.remove('hidden');
-                });
-            });
+            const w = offCanvas.width;
+            const h = offCanvas.height;
 
-            // Sliders real-time update
-            Object.keys(sliders).forEach(key => {
-                sliders[key].addEventListener('input', (e) => {
-                    const valSpan = document.getElementById(`val-${key}`);
-                    if (valSpan) {
-                        let unit = '';
-                        if (key === 'ditherScale' || key === 'rgbShift' || key === 'blur' || key === 'textSize') unit = 'px';
-                        if (key === 'motionSpeed') unit = 'x';
-                        if (key === 'textPosY') unit = '%';
-                        valSpan.innerText = e.target.value + unit;
+            // Clear Offscreen Canvas
+            offCtx.fillStyle = document.getElementById('bgColorPicker').value;
+            offCtx.fillRect(0, 0, w, h);
+
+            if (isCompareMode) {
+                offCtx.drawImage(sourceImage, 0, 0, w, h);
+                return;
+            }
+
+            // Read Controls
+            const enableStipple = document.getElementById('enableStippleToggle').checked;
+            const enableDither = document.getElementById('enableDitherToggle').checked;
+
+            // Draw Base Image
+            offCtx.drawImage(sourceImage, 0, 0, w, h);
+            let imgData = offCtx.getImageData(0, 0, w, h);
+
+            // Apply Selected Engine
+            if (enableStipple) {
+                applyStippleEngine(offCtx, imgData, w, h);
+            } else if (enableDither) {
+                applyDitherEngine(offCtx, imgData, w, h);
+            }
+
+            // Apply Warp & Glow Effects
+            applyWarpAndGlowEffects(offCtx, w, h);
+        }
+
+        // STIPPLE ENGINE
+        function applyStippleEngine(targetCtx, imgData, w, h) {
+            const density = parseInt(document.getElementById('dotDensity').value);
+            const minSize = parseFloat(document.getElementById('minDotSize').value);
+            const maxSize = parseFloat(document.getElementById('maxDotSize').value);
+            const bgColor = document.getElementById('bgColorPicker').value;
+            const dotColor = document.getElementById('dotColorPicker').value;
+
+            targetCtx.fillStyle = bgColor;
+            targetCtx.fillRect(0, 0, w, h);
+
+            targetCtx.fillStyle = dotColor;
+            targetCtx.strokeStyle = dotColor;
+
+            const step = Math.max(2, Math.floor(Math.min(w, h) / density));
+            const data = imgData.data;
+
+            for (let y = 0; y < h; y += step) {
+                for (let x = 0; x < w; x += step) {
+                    const idx = (y * w + x) * 4;
+                    const r = data[idx];
+                    const g = data[idx + 1];
+                    const b = data[idx + 2];
+                    const brightness = (r * 0.299 + g * 0.587 + b * 0.114) / 255;
+
+                    const radius = (1 - brightness) * (maxSize - minSize) + minSize;
+
+                    if (radius > 0.6) {
+                        targetCtx.beginPath();
+                        if (currentDotShape === 'circle') {
+                            targetCtx.arc(x, y, radius, 0, Math.PI * 2);
+                            targetCtx.fill();
+                        } else if (currentDotShape === 'square') {
+                            targetCtx.fillRect(x - radius, y - radius, radius * 2, radius * 2);
+                        } else if (currentDotShape === 'cross') {
+                            targetCtx.lineWidth = 1;
+                            targetCtx.moveTo(x - radius, y); targetCtx.lineTo(x + radius, y);
+                            targetCtx.moveTo(x, y - radius); targetCtx.lineTo(x, y + radius);
+                            targetCtx.stroke();
+                        } else if (currentDotShape === 'ring') {
+                            targetCtx.lineWidth = 1;
+                            targetCtx.arc(x, y, radius, 0, Math.PI * 2);
+                            targetCtx.stroke();
+                        }
                     }
-                    renderStaticImageBuffer();
-                });
+                }
+            }
+        }
+
+        // DITHER ENGINE
+        function applyDitherEngine(targetCtx, imgData, w, h) {
+            const type = document.getElementById('ditherTypeSelect').value;
+            const scale = parseInt(document.getElementById('ditherScale').value);
+            const threshold = parseInt(document.getElementById('ditherThreshold').value);
+            const dotColor = document.getElementById('dotColorPicker').value;
+            const bgColor = document.getElementById('bgColorPicker').value;
+
+            targetCtx.fillStyle = bgColor;
+            targetCtx.fillRect(0, 0, w, h);
+            targetCtx.fillStyle = dotColor;
+
+            const data = imgData.data;
+
+            if (type === 'bayer') {
+                const bayer4x4 = [
+                    [ 0,  8,  2, 10],
+                    [12,  4, 14,  6],
+                    [ 3, 11,  1,  9],
+                    [15,  7, 13,  5]
+                ];
+                for (let y = 0; y < h; y += scale) {
+                    for (let x = 0; x < w; x += scale) {
+                        const idx = (y * w + x) * 4;
+                        const brightness = (data[idx] + data[idx + 1] + data[idx + 2]) / 3;
+                        const bayerVal = (bayer4x4[(y / scale) % 4][(x / scale) % 4] / 16) * 255;
+                        if (brightness < bayerVal) {
+                            targetCtx.fillRect(x, y, scale, scale);
+                        }
+                    }
+                }
+            } else {
+                for (let y = 0; y < h; y += scale) {
+                    for (let x = 0; x < w; x += scale) {
+                        const idx = (y * w + x) * 4;
+                        const brightness = (data[idx] + data[idx + 1] + data[idx + 2]) / 3;
+                        if (brightness < threshold) {
+                            targetCtx.fillRect(x, y, scale, scale);
+                        }
+                    }
+                }
+            }
+        }
+
+        // WARP & GLOW FILTERS
+        function applyWarpAndGlowEffects(targetCtx, w, h) {
+            const scanline = parseInt(document.getElementById('scanlineIntensity').value);
+            const chromatic = parseInt(document.getElementById('chromaticAberration').value);
+
+            if (scanline > 0) {
+                targetCtx.fillStyle = `rgba(0, 0, 0, ${scanline / 200})`;
+                for (let y = 0; y < h; y += 4) {
+                    targetCtx.fillRect(0, y, w, 2);
+                }
+            }
+
+            if (chromatic > 0) {
+                targetCtx.save();
+                targetCtx.globalCompositeOperation = 'screen';
+                targetCtx.drawImage(offCanvas, chromatic, 0, w, h);
+                targetCtx.restore();
+            }
+        }
+
+        // REAL-TIME ANIMATION LOOP
+        function renderLoop(timestamp) {
+            const time = (timestamp - animStartTime) / 1000;
+            const w = mainCanvas.width;
+            const h = mainCanvas.height;
+
+            if (w > 0 && h > 0) {
+                ctx.clearRect(0, 0, w, h);
+
+                // 1. Render Offscreen Base
+                ctx.drawImage(offCanvas, 0, 0, w, h);
+
+                // 2. Render Animated Text Overlay
+                if (document.getElementById('showTextToggle').checked) {
+                    renderAnimatedText(time, w, h);
+                }
+            }
+
+            requestAnimationFrame(renderLoop);
+        }
+
+        // ANIMATED TEXT RENDERER
+        function renderAnimatedText(time, w, h) {
+            const text = document.getElementById('textInput').value;
+            if (!text) return;
+
+            const font = document.getElementById('textFontSelect').value;
+            const size = parseInt(document.getElementById('textSize').value);
+            const posX = (parseInt(document.getElementById('textPosX').value) / 100) * w;
+            const posY = (parseInt(document.getElementById('textPosY').value) / 100) * h;
+            const color = document.getElementById('textColorPicker').value;
+            const glowColor = document.getElementById('textGlowColorPicker').value;
+            const animType = document.getElementById('textAnimEffectSelect').value;
+
+            ctx.save();
+            ctx.font = `bold ${size}px ${font}`;
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+
+            let drawText = text;
+            let offsetY = 0;
+
+            if (animType === 'typewriter') {
+                const chars = Math.floor((time * 8) % (text.length + 5));
+                drawText = text.substring(0, Math.min(text.length, chars));
+            } else if (animType === 'bounce') {
+                offsetY = Math.sin(time * 6) * 15;
+            } else if (animType === 'neon') {
+                const glow = (Math.sin(time * 8) + 1) * 12;
+                ctx.shadowColor = glowColor;
+                ctx.shadowBlur = glow;
+            } else if (animType === 'glitch') {
+                if (Math.random() > 0.8) {
+                    ctx.shadowColor = '#ef4444';
+                    ctx.shadowBlur = 10;
+                    ctx.shadowOffsetX = (Math.random() - 0.5) * 8;
+                }
+            }
+
+            ctx.fillStyle = color;
+            ctx.fillText(drawText, posX, posY + offsetY);
+            ctx.restore();
+        }
+
+        // EVENT LISTENERS BINDING
+        function setupEventListeners() {
+            // Live Range Sliders
+            const sliders = [
+                'dotDensity', 'minDotSize', 'maxDotSize', 'imgAnimSpeed',
+                'ditherScale', 'ditherThreshold', 'waveDistort', 'scanlineIntensity',
+                'chromaticAberration', 'bloomGlow', 'blurRadius', 'textSize', 'textPosX', 'textPosY'
+            ];
+
+            sliders.forEach(id => {
+                const input = document.getElementById(id);
+                const valDisplay = document.getElementById(`${id}Val`);
+                if (input) {
+                    input.addEventListener('input', () => {
+                        if (valDisplay) valDisplay.textContent = input.value;
+                        renderStaticImageBuffer();
+                    });
+                }
             });
 
-            // Color pickers & Toggles
-            ['bgColorPicker', 'dotColorPicker', 'invertColors', 'sepiaToggle', 'enableDitherToggle', 'enableStippleToggle', 'showTextToggle', 'ditherTypeSelect', 'imgAnimEffectSelect', 'textFontSelect', 'textAnimEffectSelect', 'textColorPicker', 'textGlowColorPicker'].forEach(id => {
+            // Toggles & Selects
+            ['enableStippleToggle', 'enableDitherToggle', 'showTextToggle', 'ditherTypeSelect', 'imgAnimEffectSelect', 'textFontSelect', 'textAnimEffectSelect', 'bgColorPicker', 'dotColorPicker', 'textColorPicker', 'textGlowColorPicker', 'textInput'].forEach(id => {
                 const el = document.getElementById(id);
                 if (el) el.addEventListener('change', renderStaticImageBuffer);
             });
 
-            // Dot Shape Buttons
+            // Dot Shapes
             document.querySelectorAll('.dot-shape-btn').forEach(btn => {
                 btn.addEventListener('click', (e) => {
                     document.querySelectorAll('.dot-shape-btn').forEach(b => b.classList.remove('active'));
@@ -615,9 +726,11 @@
             });
 
             // File Upload
+            const imageInput = document.getElementById('imageInput');
             imageInput.addEventListener('change', handleFileUpload);
 
             // Drag and Drop
+            const dropZone = document.getElementById('dropZone');
             window.addEventListener('dragover', (e) => { e.preventDefault(); dropZone.classList.remove('hidden'); });
             dropZone.addEventListener('dragleave', () => dropZone.classList.add('hidden'));
             dropZone.addEventListener('drop', (e) => {
@@ -628,10 +741,8 @@
                 }
             });
 
-            // Reset Button
+            // Action Buttons
             document.getElementById('resetBtn').addEventListener('click', resetAllSettings);
-
-            // Export Button
             document.getElementById('exportBtn').addEventListener('click', exportCanvasImage);
 
             // Compare Button
@@ -640,54 +751,8 @@
             compareBtn.addEventListener('mouseup', () => { isCompareMode = false; renderStaticImageBuffer(); });
             compareBtn.addEventListener('mouseleave', () => { isCompareMode = false; renderStaticImageBuffer(); });
         }
-                    renderStaticImageBuffer();
-                });
-            });
 
-            // Color pickers & Toggles
-            ['bgColorPicker', 'dotColorPicker', 'invertColors', 'sepiaToggle', 'enableDitherToggle', 'enableStippleToggle', 'showTextToggle', 'ditherTypeSelect', 'imgAnimEffectSelect', 'textFontSelect', 'textAnimEffectSelect', 'textColorPicker', 'textGlowColorPicker'].forEach(id => {
-                const el = document.getElementById(id);
-                if (el) el.addEventListener('change', renderStaticImageBuffer);
-            });
-
-            // Dot Shape Buttons
-            document.querySelectorAll('.dot-shape-btn').forEach(btn => {
-                btn.addEventListener('click', (e) => {
-                    document.querySelectorAll('.dot-shape-btn').forEach(b => b.classList.remove('active'));
-                    e.target.classList.add('active');
-                    currentDotShape = e.target.getAttribute('data-shape');
-                    renderStaticImageBuffer();
-                });
-            });
-
-            // File Upload
-            imageInput.addEventListener('change', handleFileUpload);
-
-            // Drag and Drop
-            window.addEventListener('dragover', (e) => { e.preventDefault(); dropZone.classList.remove('hidden'); });
-            dropZone.addEventListener('dragleave', () => dropZone.classList.add('hidden'));
-            dropZone.addEventListener('drop', (e) => {
-                e.preventDefault();
-                dropZone.classList.add('hidden');
-                if (e.dataTransfer.files.length > 0) {
-                    loadImageFromFile(e.dataTransfer.files[0]);
-                }
-            });
-
-            // Reset Button
-            document.getElementById('resetBtn').addEventListener('click', resetAllSettings);
-
-            // Export Button
-            document.getElementById('exportBtn').addEventListener('click', exportCanvasImage);
-
-            // Compare Button
-            const compareBtn = document.getElementById('compareBtn');
-            compareBtn.addEventListener('mousedown', () => { isCompareMode = true; });
-            compareBtn.addEventListener('mouseup', () => { isCompareMode = false; });
-            compareBtn.addEventListener('mouseleave', () => { isCompareMode = false; });
-        }
-
-        // FILE UPLOAD HANDLER
+        // FILE LOADERS
         function handleFileUpload(e) {
             if (e.target.files.length > 0) {
                 loadImageFromFile(e.target.files[0]);
@@ -698,271 +763,32 @@
             if (!file.type.startsWith('image/')) return;
             const reader = new FileReader();
             reader.onload = (event) => {
-                const img = new Image();
-                img.onload = () => {
-                    rawImage = img;
-                    updateCanvasDimensions();
+                sourceImage = new Image();
+                sourceImage.onload = () => {
+                    isImageLoaded = true;
+                    resizeCanvasToImage();
                     renderStaticImageBuffer();
                 };
-                img.src = event.target.result;
+                sourceImage.src = event.target.result;
             };
             reader.readAsDataURL(file);
         }
 
-        // RESET SETTINGS
+        // RESET FUNCTION
         function resetAllSettings() {
-            sliders.size.value = 1.0;
-            sliders.contrast.value = 1.0;
-            sliders.brightness.value = 1.0;
-            sliders.stipple.value = 128;
-            sliders.motionSpeed.value = 1.0;
-            sliders.ditherScale.value = 4;
-            sliders.ditherThreshold.value = 128;
-            sliders.waveDistort.value = 0;
-            sliders.scanlines.value = 0;
-            sliders.rgbShift.value = 0;
-            sliders.bloom.value = 0;
-            sliders.blur.value = 0;
-
+            document.getElementById('dotDensity').value = 80;
+            document.getElementById('minDotSize').value = 1.0;
+            document.getElementById('maxDotSize').value = 3.5;
             document.getElementById('enableStippleToggle').checked = true;
             document.getElementById('enableDitherToggle').checked = false;
-            document.getElementById('invertColors').checked = false;
-            document.getElementById('sepiaToggle').checked = false;
-            document.getElementById('bgColorPicker').value = '#ffffff';
-            document.getElementById('dotColorPicker').value = '#000000';
-
-            Object.keys(sliders).forEach(key => {
-                const valSpan = document.getElementById(`val-${key}`);
-                if (valSpan) valSpan.innerText = sliders[key].value;
-            });
-
+            document.getElementById('showTextToggle').checked = true;
             renderStaticImageBuffer();
         }
 
-        // RENDER STATIC IMAGE BUFFER (OFFSCREEN CANVAS)
-        function renderStaticImageBuffer() {
-            if (!rawImage) return;
-
-            const width = offCanvas.width;
-            const height = offCanvas.height;
-
-            // Clear Background
-            const paperColor = document.getElementById('bgColorPicker').value;
-            const inkColor = document.getElementById('dotColorPicker').value;
-
-            oCtx.fillStyle = paperColor;
-            oCtx.fillRect(0, 0, width, height);
-
-            if (isCompareMode) {
-                oCtx.drawImage(rawImage, 0, 0);
-                return;
-            }
-
-            // Create temporary canvas for base filtering
-            const tempCanvas = document.createElement('canvas');
-            tempCanvas.width = width;
-            tempCanvas.height = height;
-            const tCtx = tempCanvas.getContext('2d');
-
-            // Apply CSS Filters (Contrast, Brightness, Blur, Sepia, Invert)
-            const contrast = sliders.contrast.value;
-            const brightness = sliders.brightness.value;
-            const blur = sliders.blur.value;
-            const invert = document.getElementById('invertColors').checked ? 100 : 0;
-            const sepia = document.getElementById('sepiaToggle').checked ? 100 : 0;
-
-            tCtx.filter = `contrast(${contrast}) brightness(${brightness}) blur(${blur}px) invert(${invert}%) sepia(${sepia}%)`;
-            tCtx.drawImage(rawImage, 0, 0, width, height);
-
-            const imgData = tCtx.getImageData(0, 0, width, height);
-            const data = imgData.data;
-
-            // RENDER: DITHER ENGINE (If Enabled)
-            if (document.getElementById('enableDitherToggle').checked) {
-                const ditherType = document.getElementById('ditherTypeSelect').value;
-                const scale = parseInt(sliders.ditherScale.value);
-                const threshold = parseInt(sliders.ditherThreshold.value);
-
-                oCtx.fillStyle = inkColor;
-
-                for (let y = 0; y < height; y += scale) {
-                    for (let x = 0; x < width; x += scale) {
-                        const idx = (y * width + x) * 4;
-                        const avg = (data[idx] + data[idx + 1] + data[idx + 2]) / 3;
-
-                        if (ditherType === 'bayer' || ditherType === 'halftone') {
-                            if (avg < threshold) {
-                                if (ditherType === 'halftone') {
-                                    const radius = (1 - avg / 255) * (scale / 2);
-                                    oCtx.beginPath();
-                                    oCtx.arc(x + scale/2, y + scale/2, radius, 0, Math.PI * 2);
-                                    oCtx.fill();
-                                } else {
-                                    oCtx.fillRect(x, y, scale, scale);
-                                }
-                            }
-                        } else if (ditherType === 'crosshatch' || ditherType === 'floyd') {
-                            if (avg < threshold) {
-                                oCtx.fillRect(x, y, scale, scale);
-                            }
-                        }
-                    }
-                }
-            } 
-            // RENDER: STIPPLE ENGINE (If Enabled)
-            else if (document.getElementById('enableStippleToggle').checked) {
-                const density = parseFloat(sliders.size.value);
-                const stippleThresh = parseInt(sliders.stipple.value);
-                const step = Math.max(2, Math.floor(8 / density));
-
-                oCtx.fillStyle = inkColor;
-                let seed = 42;
-
-                for (let y = 0; y < height; y += step) {
-                    for (let x = 0; x < width; x += step) {
-                        const idx = (y * width + x) * 4;
-                        const avg = (data[idx] + data[idx + 1] + data[idx + 2]) / 3;
-
-                        if (avg < stippleThresh) {
-                            const prob = (stippleThresh - avg) / stippleThresh;
-                            if (seededRandom(seed++) < prob) {
-                                const dotRadius = (1.5 + prob * 2.5) * density;
-
-                                oCtx.beginPath();
-                                if (currentDotShape === 'circle') {
-                                    oCtx.arc(x, y, dotRadius, 0, Math.PI * 2);
-                                } else if (currentDotShape === 'square') {
-                                    oCtx.rect(x - dotRadius, y - dotRadius, dotRadius * 2, dotRadius * 2);
-                                } else if (currentDotShape === 'cross') {
-                                    oCtx.rect(x - dotRadius, y - 0.5, dotRadius * 2, 1);
-                                    oCtx.rect(x - 0.5, y - dotRadius, 1, dotRadius * 2);
-                                }
-                                oCtx.fill();
-                            }
-                        }
-                    }
-                }
-            } 
-            // DEFAULT BASE IMAGE
-            else {
-                oCtx.drawImage(tempCanvas, 0, 0);
-            }
-
-            // CRT Scanline Mesh Overlay
-            const scanlines = parseInt(sliders.scanlines.value);
-            if (scanlines > 0) {
-                oCtx.fillStyle = `rgba(0, 0, 0, ${scanlines / 200})`;
-                for (let y = 0; y < height; y += 4) {
-                    oCtx.fillRect(0, y, width, 2);
-                }
-            }
-        }
-
-        // ANIMATION LOOP (MAIN CANVAS)
-        function startAnimationLoop() {
-            function animate(time) {
-                // FPS Counter
-                frameCount++;
-                if (time - lastFrameTime >= 1000) {
-                    document.getElementById('statusFps').innerText = `FPS: ${frameCount}`;
-                    frameCount = 0;
-                    lastFrameTime = time;
-                }
-
-                const width = mainCanvas.width;
-                const height = mainCanvas.height;
-
-                // Clear Main Canvas
-                ctx.clearRect(0, 0, width, height);
-
-                // DRAW IMAGE WITH ANIMATED EFFECT OVERLAY
-                const imgAnim = document.getElementById('imgAnimEffectSelect').value;
-                const tempo = parseFloat(sliders.motionSpeed.value);
-                const t = time * 0.002 * tempo;
-
-                ctx.save();
-
-                if (imgAnim === 'pulse') {
-                    const scale = 1 + Math.sin(t) * 0.03;
-                    ctx.translate(width / 2, height / 2);
-                    ctx.scale(scale, scale);
-                    ctx.translate(-width / 2, -height / 2);
-                } else if (imgAnim === 'ripple') {
-                    const shiftX = Math.sin(t * 2) * 10;
-                    ctx.translate(shiftX, 0);
-                }
-
-                // Draw pre-rendered static image buffer
-                ctx.drawImage(offCanvas, 0, 0);
-                ctx.restore();
-
-                // Scanline Glitch Overlay Effect
-                if (imgAnim === 'scanline' && Math.random() < 0.1) {
-                    const sliceY = Math.random() * height;
-                    const sliceH = Math.random() * 20 + 5;
-                    ctx.drawImage(offCanvas, 0, sliceY, width, sliceH, (Math.random() - 0.5) * 20, sliceY, width, sliceH);
-                }
-
-                // DRAW OVERLAY TEXT (IF ENABLED)
-                if (document.getElementById('showTextToggle').checked) {
-                    drawAnimatedText(time);
-                }
-
-                requestAnimationFrame(animate);
-            }
-
-            requestAnimationFrame(animate);
-        }
-
-        // RENDER ANIMATED TEXT OVERLAY
-        function drawAnimatedText(time) {
-            const text = document.getElementById('textOverlayInput').value;
-            if (!text) return;
-
-            const font = document.getElementById('textFontSelect').value;
-            const size = parseInt(sliders.textSize.value);
-            const posY = (parseInt(sliders.textPosY.value) / 100) * mainCanvas.height;
-            const effect = document.getElementById('textAnimEffectSelect').value;
-            const fill = document.getElementById('textColorPicker').value;
-            const glow = document.getElementById('textGlowColorPicker').value;
-
-            ctx.save();
-            ctx.textAlign = 'center';
-            ctx.textBaseline = 'middle';
-            ctx.font = `900 ${size}px "${font}", monospace`;
-
-            const centerX = mainCanvas.width / 2;
-            const t = time * 0.003;
-
-            // Glow Effect
-            ctx.shadowColor = glow;
-            ctx.shadowBlur = (effect === 'pulse') ? (Math.sin(t * 3) + 1) * 15 : 10;
-
-            ctx.fillStyle = fill;
-
-            if (effect === 'typewriter') {
-                const len = Math.floor((Math.sin(t) + 1) / 2 * text.length);
-                ctx.fillText(text.substring(0, len), centerX, posY);
-            } else if (effect === 'bounce') {
-                const bounceY = posY + Math.sin(t * 4) * 15;
-                ctx.fillText(text, centerX, bounceY);
-            } else if (effect === 'glitch') {
-                const glitchX = centerX + (Math.random() - 0.5) * (Math.random() < 0.1 ? 15 : 0);
-                ctx.fillText(text, glitchX, posY);
-            } else if (effect === 'marquee') {
-                const marqueeX = ((time * 0.1) % (mainCanvas.width + 400)) - 200;
-                ctx.fillText(text, marqueeX, posY);
-            } else {
-                ctx.fillText(text, centerX, posY);
-            }
-
-            ctx.restore();
-        }
-
-        // EXPORT HIGH RES CANVAS IMAGE
+        // EXPORT FUNCTION
         function exportCanvasImage() {
             const link = document.createElement('a');
-            link.download = `stipple-studio-export-${Date.now()}.png`;
+            link.download = 'stipple-studio-export.png';
             link.href = mainCanvas.toDataURL('image/png');
             link.click();
         }
