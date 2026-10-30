@@ -1,5 +1,933 @@
-<html>
-<h1>
-Hi am the web
-<h1>
-<html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stipple Studio</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Font Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #1a1a1a;
+            color: #E0E0E0;
+            overflow: hidden;
+        }
+
+        /* Dark glossy pill button styling matching reference image */
+        .pill-btn {
+            background: linear-gradient(180deg, #4d4d4d 0%, #2f2f2f 100%);
+            border: 1px solid rgba(255, 255, 255, 0.22);
+            box-shadow: 0 4px 10px -1px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.35);
+            transition: all 0.2s ease;
+            border-radius: 9999px;
+            color: #ffffff;
+            font-weight: 500;
+        }
+
+        .pill-btn:hover {
+            background: linear-gradient(180deg, #5d5d5d 0%, #3a3a3a 100%);
+            border-color: rgba(255, 255, 255, 0.4);
+            box-shadow: 0 6px 14px -2px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.45);
+        }
+
+        .pill-btn:active {
+            background: linear-gradient(180deg, #222222 0%, #3d3d3d 100%);
+            border-color: rgba(255, 255, 255, 0.5);
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.8);
+        }
+
+        /* Custom Dark Glossy Range Sliders matching reference image */
+        input[type=range] {
+            -webkit-appearance: none;
+            width: 100%;
+            background: transparent;
+        }
+
+        input[type=range]:focus {
+            outline: none;
+        }
+
+        /* Track */
+        input[type=range]::-webkit-slider-runnable-track {
+            width: 100%;
+            height: 12px;
+            cursor: pointer;
+            background: linear-gradient(180deg, #222222 0%, #383838 100%);
+            border-radius: 9999px;
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            box-shadow: inset 0 2px 5px rgba(0,0,0,0.7);
+        }
+
+        input[type=range]::-moz-range-track {
+            width: 100%;
+            height: 12px;
+            cursor: pointer;
+            background: linear-gradient(180deg, #222222 0%, #383838 100%);
+            border-radius: 9999px;
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            box-shadow: inset 0 2px 5px rgba(0,0,0,0.7);
+        }
+
+        /* Thumb */
+        input[type=range]::-webkit-slider-thumb {
+            height: 20px;
+            width: 20px;
+            border-radius: 50%;
+            background: radial-gradient(circle at 35% 35%, #ffffff 0%, #d8d8d8 50%, #a0a0a0 100%);
+            cursor: pointer;
+            -webkit-appearance: none;
+            margin-top: -4px;
+            box-shadow: 0 3px 8px rgba(0,0,0,0.7), inset 0 1px 0 rgba(255,255,255,0.9);
+            border: 1px solid rgba(0,0,0,0.4);
+            transition: transform 0.1s ease;
+        }
+
+        input[type=range]::-moz-range-thumb {
+            height: 20px;
+            width: 20px;
+            border-radius: 50%;
+            background: radial-gradient(circle at 35% 35%, #ffffff 0%, #d8d8d8 50%, #a0a0a0 100%);
+            cursor: pointer;
+            box-shadow: 0 3px 8px rgba(0,0,0,0.7), inset 0 1px 0 rgba(255,255,255,0.9);
+            border: 1px solid rgba(0,0,0,0.4);
+            transition: transform 0.1s ease;
+        }
+
+        input[type=range]:active::-webkit-slider-thumb {
+            transform: scale(1.15);
+        }
+
+        /* Scrollbars */
+        ::-webkit-scrollbar {
+            width: 5px;
+            height: 5px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #1c1c1c;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #3a3a3a;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #555;
+        }
+
+        /* Script Watermark Vector Graphic overlay (matching reference image) */
+        .watermark-svg {
+            position: absolute;
+            bottom: -30px;
+            left: -40px;
+            width: 360px;
+            opacity: 0.12;
+            pointer-events: none;
+            z-index: 0;
+            user-select: none;
+        }
+
+        /* Canvas background grid */
+        .canvas-bg {
+            background-color: #121212;
+            background-image: 
+                radial-gradient(#262626 1px, transparent 1px),
+                radial-gradient(#262626 1px, #121212 1px);
+            background-size: 24px 24px;
+            background-position: 0 0, 12px 12px;
+        }
+
+        .modal-blur {
+            backdrop-filter: blur(10px);
+        }
+
+        .tab-btn {
+            transition: all 0.2s ease;
+            border-bottom: 2px solid transparent;
+        }
+        .tab-btn.active {
+            color: #ffffff;
+            border-color: #ffffff;
+            background: rgba(255,255,255,0.06);
+        }
+    </style>
+</head>
+<body class="h-screen w-screen flex flex-col md:flex-row overflow-hidden select-none">
+
+    <!-- LEFT SIDEBAR PANEL (Matching Dark UI Mockup) -->
+    <aside class="w-full md:w-[360px] lg:w-[380px] bg-[#2a2a2a] text-white flex flex-col justify-between relative z-10 shrink-0 border-r border-[#3a3a3a] shadow-2xl h-full overflow-hidden">
+        
+        <!-- Top Section Controls -->
+        <div class="flex flex-col p-6 pb-3 relative z-10 space-y-4">
+            
+            <!-- Main Upload Button -->
+            <div class="w-full">
+                <input type="file" id="imageInput" accept="image/*" class="hidden">
+                <button onclick="document.getElementById('imageInput').click()" 
+                        class="pill-btn w-full py-3 px-6 text-center text-sm font-medium tracking-wide flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-cloud-arrow-up text-xs opacity-80"></i>
+                    Upload
+                </button>
+            </div>
+
+            <!-- Tab Navigation for Extended Controls -->
+            <div class="flex border-b border-[#3e3e3e] text-xs text-gray-400 overflow-x-auto no-scrollbar gap-1 pt-1">
+                <button onclick="switchTab('stipple')" id="tab-stipple" class="tab-btn active px-3 py-2 whitespace-nowrap font-medium flex items-center gap-1.5">
+                    <i class="fa-solid fa-circle-dot text-[10px]"></i> Stipple
+                </button>
+                <button onclick="switchTab('color')" id="tab-color" class="tab-btn px-3 py-2 whitespace-nowrap font-medium flex items-center gap-1.5">
+                    <i class="fa-solid fa-sliders text-[10px]"></i> Color
+                </button>
+                <button onclick="switchTab('artistic')" id="tab-artistic" class="tab-btn px-3 py-2 whitespace-nowrap font-medium flex items-center gap-1.5">
+                    <i class="fa-solid fa-wand-magic-sparkles text-[10px]"></i> FX
+                </button>
+                <button onclick="switchTab('transform')" id="tab-transform" class="tab-btn px-3 py-2 whitespace-nowrap font-medium flex items-center gap-1.5">
+                    <i class="fa-solid fa-crop-simple text-[10px]"></i> Crop
+                </button>
+                <button onclick="switchTab('presets')" id="tab-presets" class="tab-btn px-3 py-2 whitespace-nowrap font-medium flex items-center gap-1.5">
+                    <i class="fa-solid fa-palette text-[10px]"></i> Presets
+                </button>
+            </div>
+        </div>
+
+        <!-- Scrollable Sliders & Settings Container -->
+        <div class="flex-1 overflow-y-auto px-6 py-2 space-y-5 relative z-10">
+            
+            <!-- TAB 1: STIPPLE & HALFTONE (Matches Main UI Reference) -->
+            <div id="panel-stipple" class="space-y-4">
+                
+                <!-- Size Slider -->
+                <div class="flex flex-col space-y-1.5">
+                    <div class="flex justify-between items-center text-xs font-light text-gray-300">
+                        <label for="sizeSlider">Size</label>
+                        <span id="sizeVal" class="text-[11px] text-gray-400 font-mono">6.0</span>
+                    </div>
+                    <input type="range" id="sizeSlider" min="2" max="32" step="0.5" value="6">
+                </div>
+
+                <!-- Contrast Slider -->
+                <div class="flex flex-col space-y-1.5">
+                    <div class="flex justify-between items-center text-xs font-light text-gray-300">
+                        <label for="contrastSlider">Contrast</label>
+                        <span id="contrastVal" class="text-[11px] text-gray-400 font-mono">1.2</span>
+                    </div>
+                    <input type="range" id="contrastSlider" min="0.2" max="3.0" step="0.1" value="1.2">
+                </div>
+
+                <!-- Stippling Density Slider -->
+                <div class="flex flex-col space-y-1.5">
+                    <div class="flex justify-between items-center text-xs font-light text-gray-300">
+                        <label for="stipplingSlider">Stippling</label>
+                        <span id="stipplingVal" class="text-[11px] text-gray-400 font-mono">75%</span>
+                    </div>
+                    <input type="range" id="stipplingSlider" min="10" max="100" step="1" value="75">
+                </div>
+
+                <!-- Jitter / Randomness Noise Slider -->
+                <div class="flex flex-col space-y-1.5 pt-1">
+                    <div class="flex justify-between items-center text-xs font-light text-gray-300">
+                        <label for="noiseSlider">Random Jitter</label>
+                        <span id="noiseVal" class="text-[11px] text-gray-400 font-mono">15%</span>
+                    </div>
+                    <input type="range" id="noiseSlider" min="0" max="100" step="1" value="15">
+                </div>
+
+                <!-- Dot Shape Selectors -->
+                <div class="flex justify-between items-center pt-2 border-t border-[#3e3e3e]">
+                    <span class="text-xs text-gray-300 font-light">Dot Shape</span>
+                    <div class="flex gap-1.5">
+                        <button onclick="setDotShape('circle')" id="shapeCircle" class="py-1 px-2.5 text-[10px] rounded-full bg-[#4a4a4a] border border-gray-400 text-white">Circle</button>
+                        <button onclick="setDotShape('square')" id="shapeSquare" class="py-1 px-2.5 text-[10px] rounded-full bg-[#202020] border border-transparent text-gray-400">Square</button>
+                        <button onclick="setDotShape('diamond')" id="shapeDiamond" class="py-1 px-2.5 text-[10px] rounded-full bg-[#202020] border border-transparent text-gray-400">Diamond</button>
+                    </div>
+                </div>
+
+                <!-- Mode & Palette Pickers -->
+                <div class="pt-2 flex flex-col space-y-2 border-t border-[#3e3e3e]">
+                    <div class="flex justify-between items-center">
+                        <label class="text-xs text-gray-300 flex items-center gap-2 cursor-pointer font-light">
+                            <input type="checkbox" id="invertColors" class="rounded bg-gray-700 border-gray-600 text-white focus:ring-0">
+                            Invert Colors
+                        </label>
+                        <label class="text-xs text-gray-300 flex items-center gap-2 font-light">
+                            Dot Color:
+                            <input type="color" id="dotColorPicker" value="#ffffff" class="w-5 h-5 rounded cursor-pointer border-0 bg-transparent">
+                        </label>
+                    </div>
+                    <div class="flex justify-between items-center">
+                        <span class="text-xs text-gray-300 font-light">Background Color</span>
+                        <input type="color" id="bgColorPicker" value="#121212" class="w-5 h-5 rounded cursor-pointer border-0 bg-transparent">
+                    </div>
+                </div>
+            </div>
+
+            <!-- TAB 2: COLOR & TONE CONTROLS -->
+            <div id="panel-color" class="space-y-4 hidden">
+                <div class="flex flex-col space-y-1.5">
+                    <div class="flex justify-between items-center text-xs font-light text-gray-300">
+                        <label for="brightnessSlider">Brightness</label>
+                        <span id="brightnessVal" class="text-[11px] text-gray-400 font-mono">0</span>
+                    </div>
+                    <input type="range" id="brightnessSlider" min="-100" max="100" step="1" value="0">
+                </div>
+
+                <div class="flex flex-col space-y-1.5">
+                    <div class="flex justify-between items-center text-xs font-light text-gray-300">
+                        <label for="saturationSlider">Saturation</label>
+                        <span id="saturationVal" class="text-[11px] text-gray-400 font-mono">1.0</span>
+                    </div>
+                    <input type="range" id="saturationSlider" min="0" max="3.0" step="0.1" value="1.0">
+                </div>
+
+                <div class="flex flex-col space-y-1.5">
+                    <div class="flex justify-between items-center text-xs font-light text-gray-300">
+                        <label for="hueSlider">Hue Shift</label>
+                        <span id="hueVal" class="text-[11px] text-gray-400 font-mono">0°</span>
+                    </div>
+                    <input type="range" id="hueSlider" min="-180" max="180" step="1" value="0">
+                </div>
+
+                <div class="flex flex-col space-y-1.5">
+                    <div class="flex justify-between items-center text-xs font-light text-gray-300">
+                        <label for="vignetteSlider">Vignette</label>
+                        <span id="vignetteVal" class="text-[11px] text-gray-400 font-mono">0%</span>
+                    </div>
+                    <input type="range" id="vignetteSlider" min="0" max="100" step="1" value="0">
+                </div>
+            </div>
+
+            <!-- TAB 3: ARTISTIC & FX -->
+            <div id="panel-artistic" class="space-y-4 hidden">
+                <div class="flex flex-col space-y-1.5">
+                    <div class="flex justify-between items-center text-xs font-light text-gray-300">
+                        <label for="posterizeSlider">Posterize Levels</label>
+                        <span id="posterizeVal" class="text-[11px] text-gray-400 font-mono">Off</span>
+                    </div>
+                    <input type="range" id="posterizeSlider" min="2" max="16" step="1" value="16">
+                </div>
+
+                <div class="flex flex-col space-y-1.5">
+                    <div class="flex justify-between items-center text-xs font-light text-gray-300">
+                        <label for="pixelateSlider">Pixelate Factor</label>
+                        <span id="pixelateVal" class="text-[11px] text-gray-400 font-mono">1x</span>
+                    </div>
+                    <input type="range" id="pixelateSlider" min="1" max="20" step="1" value="1">
+                </div>
+
+                <div class="flex flex-col space-y-1.5">
+                    <div class="flex justify-between items-center text-xs font-light text-gray-300">
+                        <label for="blurSlider">Soft Blur</label>
+                        <span id="blurVal" class="text-[11px] text-gray-400 font-mono">0px</span>
+                    </div>
+                    <input type="range" id="blurSlider" min="0" max="10" step="0.5" value="0">
+                </div>
+
+                <div class="flex justify-between items-center pt-2 border-t border-[#3e3e3e]">
+                    <label class="text-xs text-gray-300 flex items-center gap-2 cursor-pointer font-light">
+                        <input type="checkbox" id="sepiaToggle" class="rounded bg-gray-700 border-gray-600 text-white focus:ring-0">
+                        Sepia Tone Filter
+                    </label>
+                </div>
+            </div>
+
+            <!-- TAB 4: TRANSFORM & CROP -->
+            <div id="panel-transform" class="space-y-4 hidden">
+                <div class="flex flex-col space-y-1.5">
+                    <div class="flex justify-between items-center text-xs font-light text-gray-300">
+                        <label for="rotationSlider">Rotation Angle</label>
+                        <span id="rotationVal" class="text-[11px] text-gray-400 font-mono">0°</span>
+                    </div>
+                    <input type="range" id="rotationSlider" min="0" max="360" step="90" value="0">
+                </div>
+
+                <div class="flex gap-2 pt-1">
+                    <button onclick="toggleFlip('h')" id="flipHBtn" class="pill-btn flex-1 py-1.5 text-xs flex items-center justify-center gap-1">
+                        <i class="fa-solid fa-arrows-left-right text-[10px]"></i> Flip H
+                    </button>
+                    <button onclick="toggleFlip('v')" id="flipVBtn" class="pill-btn flex-1 py-1.5 text-xs flex items-center justify-center gap-1">
+                        <i class="fa-solid fa-arrows-up-down text-[10px]"></i> Flip V
+                    </button>
+                </div>
+
+                <div class="flex flex-col space-y-2 pt-2 border-t border-[#3e3e3e]">
+                    <span class="text-xs text-gray-300 font-light">Aspect Ratio Crop</span>
+                    <div class="grid grid-cols-3 gap-1.5">
+                        <button onclick="setCropRatio('original')" class="py-1 px-2 text-[10px] rounded bg-[#202020] border border-gray-600 text-gray-300 hover:text-white">Original</button>
+                        <button onclick="setCropRatio('1:1')" class="py-1 px-2 text-[10px] rounded bg-[#202020] border border-gray-600 text-gray-300 hover:text-white">1:1 Square</button>
+                        <button onclick="setCropRatio('16:9')" class="py-1 px-2 text-[10px] rounded bg-[#202020] border border-gray-600 text-gray-300 hover:text-white">16:9 Wide</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TAB 5: PRESETS -->
+            <div id="panel-presets" class="grid grid-cols-2 gap-2.5 hidden">
+                <button onclick="applyPreset('classic')" class="p-2.5 rounded-xl bg-[#202020] hover:bg-[#333] border border-white/5 text-left transition">
+                    <div class="text-xs font-medium text-white mb-0.5">Classic Dot</div>
+                    <div class="text-[10px] text-gray-400">Standard monochrome</div>
+                </button>
+                <button onclick="applyPreset('cyberpunk')" class="p-2.5 rounded-xl bg-[#202020] hover:bg-[#333] border border-white/5 text-left transition">
+                    <div class="text-xs font-medium text-pink-400 mb-0.5">Cyberpunk</div>
+                    <div class="text-[10px] text-gray-400">Neon pink & cyan</div>
+                </button>
+                <button onclick="applyPreset('vintage')" class="p-2.5 rounded-xl bg-[#202020] hover:bg-[#333] border border-white/5 text-left transition">
+                    <div class="text-xs font-medium text-amber-200 mb-0.5">Vintage Grain</div>
+                    <div class="text-[10px] text-gray-400">Warm subtle noise</div>
+                </button>
+                <button onclick="applyPreset('noir')" class="p-2.5 rounded-xl bg-[#202020] hover:bg-[#333] border border-white/5 text-left transition">
+                    <div class="text-xs font-medium text-gray-200 mb-0.5">Ink Noir</div>
+                    <div class="text-[10px] text-gray-400">High contrast stark</div>
+                </button>
+            </div>
+
+            <!-- Pill Navigation Buttons (Matching Reference Design) -->
+            <div class="pt-3 flex flex-col space-y-2 border-t border-[#3e3e3e]">
+                <button onclick="openModal('aboutModal')" class="pill-btn w-full py-2.5 px-6 text-center text-sm font-medium tracking-wide">
+                    About
+                </button>
+                <button onclick="openModal('socialsModal')" class="pill-btn w-full py-2.5 px-6 text-center text-sm font-medium tracking-wide">
+                    Socials
+                </button>
+                <button onclick="openModal('contactModal')" class="pill-btn w-full py-2.5 px-6 text-center text-sm font-medium tracking-wide">
+                    Contact
+                </button>
+            </div>
+
+        </div>
+
+        <!-- Decorative Script Typography Background Watermark (Matching UI design) -->
+        <svg class="watermark-svg" viewBox="0 0 350 400" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M50 320 C10 200, 140 40, 180 180 C200 250, 90 380, 240 280 C280 250, 300 180, 310 120" stroke="white" stroke-width="28" stroke-linecap="round" fill="none"/>
+            <path d="M120 350 C170 280, 220 160, 260 80" stroke="white" stroke-width="20" stroke-linecap="round" fill="none"/>
+        </svg>
+
+        <!-- Bottom Export Pill Button (Matching UI design) -->
+        <div class="p-6 relative z-10 bg-[#282828]/90 border-t border-[#3a3a3a] shrink-0">
+            <button onclick="exportImage()" class="pill-btn w-full py-3 px-6 text-center text-sm font-medium tracking-wide flex items-center justify-center gap-2">
+                <i class="fa-solid fa-download text-xs opacity-80"></i>
+                Export
+            </button>
+        </div>
+
+    </aside>
+
+    <!-- RIGHT MAIN CANVAS DISPLAY AREA -->
+    <main class="flex-1 canvas-bg relative flex flex-col items-center justify-center p-4 md:p-8 h-full overflow-hidden">
+        
+        <!-- Canvas Bar Info & Controls -->
+        <div class="absolute top-4 right-4 z-20 flex items-center gap-3 bg-[#202020]/90 backdrop-blur-md px-3.5 py-1.5 rounded-full border border-white/10 text-xs text-gray-300 shadow-lg">
+            <span id="imageDimensions" class="font-mono text-gray-400">800 x 800 px</span>
+            <span class="w-1 h-1 bg-gray-500 rounded-full"></span>
+            <button onclick="toggleCompareMode()" id="compareBtn" class="hover:text-white px-2 py-0.5 rounded bg-white/5 border border-white/10 text-[11px] transition">
+                <i class="fa-solid fa-columns mr-1"></i> Compare
+            </button>
+            <span class="w-1 h-1 bg-gray-500 rounded-full"></span>
+            <button onclick="resetCanvasFilters()" class="hover:text-white transition flex items-center gap-1 text-[11px]" title="Reset All Filters">
+                <i class="fa-solid fa-rotate-left text-[10px]"></i> Reset
+            </button>
+        </div>
+
+        <!-- Canvas Container -->
+        <div id="canvasWrapper" class="relative max-w-full max-h-full flex items-center justify-center rounded-lg overflow-hidden border border-white/10 shadow-2xl bg-black/40 p-1">
+            <canvas id="mainCanvas" class="max-w-full max-h-[85vh] object-contain rounded transition-all duration-75"></canvas>
+            
+            <!-- Drag & Drop Zone -->
+            <div id="dropZone" class="absolute inset-0 bg-black/80 border-2 border-dashed border-gray-400 rounded flex flex-col items-center justify-center opacity-0 pointer-events-none transition-opacity duration-200">
+                <i class="fa-solid fa-file-arrow-up text-4xl text-white mb-2 animate-bounce"></i>
+                <p class="text-white font-medium text-sm">Drop image here to edit</p>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- MODAL DIALOGS -->
+    <div id="aboutModal" class="fixed inset-0 bg-black/70 modal-blur z-50 flex items-center justify-center p-4 opacity-0 pointer-events-none transition-all duration-200">
+        <div class="bg-[#242424] border border-white/15 rounded-2xl max-w-md w-full p-6 text-gray-200 shadow-2xl relative">
+            <button onclick="closeModal('aboutModal')" class="absolute top-4 right-4 text-gray-400 hover:text-white text-lg">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+            <div class="flex items-center gap-3 mb-4">
+                <div class="w-10 h-10 rounded-full bg-gradient-to-br from-gray-600 to-gray-800 flex items-center justify-center border border-white/20">
+                    <i class="fa-solid fa-circle-nodes text-white text-lg"></i>
+                </div>
+                <div>
+                    <h3 class="text-lg font-semibold text-white leading-tight">About Stipple Studio</h3>
+                    <p class="text-xs text-gray-400">Interactive Image Effect Suite</p>
+                </div>
+            </div>
+            <div class="text-sm space-y-3 text-gray-300 leading-relaxed font-light border-t border-white/10 pt-4">
+                <p>
+                    Stipple Studio reproduces classic stippling, dot-matrix halftone graphics, and custom color tones on uploaded images in real-time right inside your browser.
+                </p>
+            </div>
+            <div class="mt-6 text-right">
+                <button onclick="closeModal('aboutModal')" class="pill-btn px-5 py-1.5 text-xs">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Socials Modal -->
+    <div id="socialsModal" class="fixed inset-0 bg-black/70 modal-blur z-50 flex items-center justify-center p-4 opacity-0 pointer-events-none transition-all duration-200">
+        <div class="bg-[#242424] border border-white/15 rounded-2xl max-w-sm w-full p-6 text-gray-200 shadow-2xl relative">
+            <button onclick="closeModal('socialsModal')" class="absolute top-4 right-4 text-gray-400 hover:text-white text-lg">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+            <h3 class="text-lg font-semibold text-white mb-1">Social Links</h3>
+            <p class="text-xs text-gray-400 mb-5">Find us across the web</p>
+            <div class="space-y-3">
+                <a href="https://github.com" target="_blank" class="flex items-center justify-between p-3 rounded-xl bg-[#2e2e2e] hover:bg-[#383838] border border-white/5 transition text-xs text-gray-200">
+                    <span class="flex items-center gap-3"><i class="fa-brands fa-github text-lg"></i> GitHub Repository</span>
+                    <i class="fa-solid fa-arrow-up-right-from-square text-[10px] opacity-60"></i>
+                </a>
+                <a href="https://twitter.com" target="_blank" class="flex items-center justify-between p-3 rounded-xl bg-[#2e2e2e] hover:bg-[#383838] border border-white/5 transition text-xs text-gray-200">
+                    <span class="flex items-center gap-3"><i class="fa-brands fa-x-twitter text-lg"></i> X / Twitter</span>
+                    <i class="fa-solid fa-arrow-up-right-from-square text-[10px] opacity-60"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Contact Modal -->
+    <div id="contactModal" class="fixed inset-0 bg-black/70 modal-blur z-50 flex items-center justify-center p-4 opacity-0 pointer-events-none transition-all duration-200">
+        <div class="bg-[#242424] border border-white/15 rounded-2xl max-w-md w-full p-6 text-gray-200 shadow-2xl relative">
+            <button onclick="closeModal('contactModal')" class="absolute top-4 right-4 text-gray-400 hover:text-white text-lg">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+            <h3 class="text-lg font-semibold text-white mb-1">Contact</h3>
+            <p class="text-xs text-gray-400 mb-4">Send a direct message</p>
+            <form onsubmit="handleContactSubmit(event)" class="space-y-3 text-xs">
+                <div>
+                    <label class="block text-gray-300 mb-1 font-light">Email Address</label>
+                    <input type="email" required placeholder="email@example.com" class="w-full bg-[#1a1a1a] border border-gray-700 rounded-lg p-2.5 text-gray-100 focus:outline-none focus:border-gray-500">
+                </div>
+                <div>
+                    <label class="block text-gray-300 mb-1 font-light">Message</label>
+                    <textarea rows="3" required placeholder="Your message..." class="w-full bg-[#1a1a1a] border border-gray-700 rounded-lg p-2.5 text-gray-100 focus:outline-none focus:border-gray-500"></textarea>
+                </div>
+                <button type="submit" class="pill-btn w-full py-2.5 text-center text-xs mt-2">Send Message</button>
+            </form>
+            <div id="contactSuccess" class="hidden text-center text-xs text-green-400 mt-3">Message sent successfully!</div>
+        </div>
+    </div>
+
+    <!-- JAVASCRIPT ENGINE -->
+    <script>
+        const canvas = document.getElementById('mainCanvas');
+        const ctx = canvas.getContext('2d', { willReadFrequently: true });
+        const imageInput = document.getElementById('imageInput');
+
+        let loadedImage = null;
+        let selectedShape = 'circle';
+        let renderTimeout = null;
+        let activeTab = 'stipple';
+        let flipH = false;
+        let flipV = false;
+        let isCompareMode = false;
+        let cropRatio = 'original';
+
+        const sliders = {
+            size: document.getElementById('sizeSlider'),
+            contrast: document.getElementById('contrastSlider'),
+            stippling: document.getElementById('stipplingSlider'),
+            noise: document.getElementById('noiseSlider'),
+            brightness: document.getElementById('brightnessSlider'),
+            saturation: document.getElementById('saturationSlider'),
+            hue: document.getElementById('hueSlider'),
+            vignette: document.getElementById('vignetteSlider'),
+            posterize: document.getElementById('posterizeSlider'),
+            pixelate: document.getElementById('pixelateSlider'),
+            blur: document.getElementById('blurSlider'),
+            rotation: document.getElementById('rotationSlider')
+        };
+
+        window.addEventListener('load', () => {
+            initDefaultImage();
+            setupEventListeners();
+        });
+
+        function switchTab(tabId) {
+            activeTab = tabId;
+            ['stipple', 'color', 'artistic', 'transform', 'presets'].forEach(t => {
+                const btn = document.getElementById(`tab-${t}`);
+                const panel = document.getElementById(`panel-${t}`);
+                if (t === tabId) {
+                    btn.classList.add('active');
+                    panel.classList.remove('hidden');
+                } else {
+                    btn.classList.remove('active');
+                    panel.classList.add('hidden');
+                }
+            });
+        }
+
+        function initDefaultImage() {
+            const tempCanvas = document.createElement('canvas');
+            tempCanvas.width = 800;
+            tempCanvas.height = 800;
+            const tCtx = tempCanvas.getContext('2d');
+
+            const grad = tCtx.createRadialGradient(400, 400, 50, 400, 400, 400);
+            grad.addColorStop(0, '#ffffff');
+            grad.addColorStop(0.5, '#777777');
+            grad.addColorStop(1, '#050505');
+
+            tCtx.fillStyle = '#0a0a0a';
+            tCtx.fillRect(0, 0, 800, 800);
+
+            tCtx.fillStyle = grad;
+            tCtx.beginPath();
+            tCtx.arc(400, 400, 280, 0, Math.PI * 2);
+            tCtx.fill();
+
+            tCtx.strokeStyle = '#ffffff';
+            tCtx.lineWidth = 16;
+            tCtx.beginPath();
+            tCtx.arc(360, 360, 200, 0, Math.PI * 2);
+            tCtx.stroke();
+
+            const img = new Image();
+            img.onload = () => {
+                loadedImage = img;
+                renderEffect();
+            };
+            img.src = tempCanvas.toDataURL();
+        }
+
+        function setupEventListeners() {
+            Object.keys(sliders).forEach(key => {
+                const slider = sliders[key];
+                if (!slider) return;
+                slider.addEventListener('input', (e) => {
+                    const valSpan = document.getElementById(`${key}Val`);
+                    if (valSpan) {
+                        let unit = '';
+                        if (key === 'blur') unit = 'px';
+                        else if (key === 'stippling' || key === 'noise' || key === 'vignette') unit = '%';
+                        else if (key === 'hue' || key === 'rotation') unit = '°';
+                        else if (key === 'pixelate') unit = 'x';
+                        else if (key === 'posterize') unit = e.target.value === '16' ? 'Off' : '';
+                        valSpan.innerText = e.target.value + unit;
+                    }
+                    debounceRender();
+                });
+            });
+
+            document.getElementById('invertColors').addEventListener('change', renderEffect);
+            document.getElementById('sepiaToggle').addEventListener('change', renderEffect);
+            document.getElementById('dotColorPicker').addEventListener('input', debounceRender);
+            document.getElementById('bgColorPicker').addEventListener('input', debounceRender);
+
+            imageInput.addEventListener('change', (e) => {
+                if (e.target.files && e.target.files[0]) {
+                    loadImageFile(e.target.files[0]);
+                }
+            });
+
+            const dropZone = document.getElementById('dropZone');
+            document.body.addEventListener('dragover', (e) => {
+                e.preventDefault();
+                dropZone.classList.remove('opacity-0', 'pointer-events-none');
+            });
+            document.body.addEventListener('dragleave', (e) => {
+                if (e.clientX === 0 && e.clientY === 0) dropZone.classList.add('opacity-0', 'pointer-events-none');
+            });
+            document.body.addEventListener('drop', (e) => {
+                e.preventDefault();
+                dropZone.classList.add('opacity-0', 'pointer-events-none');
+                if (e.dataTransfer.files && e.dataTransfer.files[0]) {
+                    loadImageFile(e.dataTransfer.files[0]);
+                }
+            });
+        }
+
+        function debounceRender() {
+            if (renderTimeout) clearTimeout(renderTimeout);
+            renderTimeout = setTimeout(renderEffect, 10);
+        }
+
+        function loadImageFile(file) {
+            const reader = new FileReader();
+            reader.onload = (event) => {
+                const img = new Image();
+                img.onload = () => {
+                    loadedImage = img;
+                    renderEffect();
+                };
+                img.src = event.target.result;
+            };
+            reader.readAsDataURL(file);
+        }
+
+        function toggleFlip(dir) {
+            if (dir === 'h') flipH = !flipH;
+            if (dir === 'v') flipV = !flipV;
+            document.getElementById('flipHBtn').classList.toggle('border-white/40', flipH);
+            document.getElementById('flipVBtn').classList.toggle('border-white/40', flipV);
+            renderEffect();
+        }
+
+        function setCropRatio(ratio) {
+            cropRatio = ratio;
+            renderEffect();
+        }
+
+        function toggleCompareMode() {
+            isCompareMode = !isCompareMode;
+            document.getElementById('compareBtn').classList.toggle('bg-white/20', isCompareMode);
+            renderEffect();
+        }
+
+        function renderEffect() {
+            if (!loadedImage) return;
+
+            const maxDimension = 1200;
+            let width = loadedImage.width;
+            let height = loadedImage.height;
+
+            if (cropRatio === '1:1') {
+                const min = Math.min(width, height);
+                width = min; height = min;
+            } else if (cropRatio === '16:9') {
+                height = Math.round(width * (9 / 16));
+            }
+
+            if (width > maxDimension || height > maxDimension) {
+                if (width > height) {
+                    height = Math.round((height * maxDimension) / width);
+                    width = maxDimension;
+                } else {
+                    width = Math.round((width * maxDimension) / height);
+                    height = maxDimension;
+                }
+            }
+
+            canvas.width = width;
+            canvas.height = height;
+            document.getElementById('imageDimensions').innerText = `${width} x ${height} px`;
+
+            const stageCanvas = document.createElement('canvas');
+            stageCanvas.width = width;
+            stageCanvas.height = height;
+            const stageCtx = stageCanvas.getContext('2d');
+
+            stageCtx.save();
+            stageCtx.translate(width / 2, height / 2);
+
+            const rotDeg = parseInt(sliders.rotation.value);
+            stageCtx.rotate((rotDeg * Math.PI) / 180);
+            stageCtx.scale(flipH ? -1 : 1, flipV ? -1 : 1);
+
+            const bVal = 100 + parseInt(sliders.brightness.value);
+            const cVal = parseFloat(sliders.contrast.value) * 100;
+            const sVal = parseFloat(sliders.saturation.value) * 100;
+            const hVal = parseInt(sliders.hue.value);
+            const blurVal = parseFloat(sliders.blur.value);
+            const isSepia = document.getElementById('sepiaToggle').checked;
+
+            stageCtx.filter = `brightness(${bVal}%) contrast(${cVal}%) saturate(${sVal}%) hue-rotate(${hVal}deg) blur(${blurVal}px) ${isSepia ? 'sepia(100%)' : ''}`;
+            stageCtx.drawImage(loadedImage, -width / 2, -height / 2, width, height);
+            stageCtx.restore();
+
+            const pixVal = parseInt(sliders.pixelate.value);
+            if (pixVal > 1) {
+                const smallW = Math.max(1, Math.floor(width / pixVal));
+                const smallH = Math.max(1, Math.floor(height / pixVal));
+                const pixCanvas = document.createElement('canvas');
+                pixCanvas.width = smallW;
+                pixCanvas.height = smallH;
+                const pCtx = pixCanvas.getContext('2d');
+                pCtx.drawImage(stageCanvas, 0, 0, smallW, smallH);
+
+                stageCtx.imageSmoothingEnabled = false;
+                stageCtx.drawImage(pixCanvas, 0, 0, smallW, smallH, 0, 0, width, height);
+            }
+
+            if (isCompareMode) {
+                ctx.drawImage(stageCanvas, 0, 0);
+                ctx.strokeStyle = '#ffffff';
+                ctx.lineWidth = 2;
+                ctx.beginPath();
+                ctx.moveTo(width / 2, 0);
+                ctx.lineTo(width / 2, height);
+                ctx.stroke();
+                return;
+            }
+
+            const imgData = stageCtx.getImageData(0, 0, width, height);
+            const pixels = imgData.data;
+
+            const dotSize = parseFloat(sliders.size.value);
+            const stippleDensity = parseInt(sliders.stippling.value) / 100;
+            const jitterVal = parseInt(sliders.noise.value) / 100;
+            const isInverted = document.getElementById('invertColors').checked;
+            const dotColor = document.getElementById('dotColorPicker').value;
+            const bgColor = document.getElementById('bgColorPicker').value;
+
+            ctx.fillStyle = bgColor;
+            ctx.fillRect(0, 0, width, height);
+
+            ctx.fillStyle = dotColor;
+
+            const posterizeLevels = parseInt(sliders.posterize.value);
+            const step = Math.max(2, Math.floor(dotSize));
+
+            for (let y = 0; y < height; y += step) {
+                for (let x = 0; x < width; x += step) {
+                    const pixelIndex = (y * width + x) * 4;
+
+                    let r = pixels[pixelIndex];
+                    let g = pixels[pixelIndex + 1];
+                    let b = pixels[pixelIndex + 2];
+
+                    if (posterizeLevels < 16) {
+                        const numAreas = 255 / (posterizeLevels - 1);
+                        r = Math.round(Math.round(r / numAreas) * numAreas);
+                        g = Math.round(Math.round(g / numAreas) * numAreas);
+                        b = Math.round(Math.round(b / numAreas) * numAreas);
+                    }
+
+                    let luminance = (0.299 * r + 0.587 * g + 0.114 * b) / 255;
+                    if (isInverted) luminance = 1 - luminance;
+
+                    const darkness = 1 - luminance;
+
+                    if (stippleDensity < 1.0) {
+                        if (Math.random() > stippleDensity && darkness < 0.8) continue;
+                    }
+
+                    const radius = (darkness * (dotSize / 2)) * 1.25;
+
+                    if (radius > 0.2) {
+                        let centerX = x + step / 2;
+                        let centerY = y + step / 2;
+
+                        if (jitterVal > 0) {
+                            centerX += (Math.random() - 0.5) * step * jitterVal;
+                            centerY += (Math.random() - 0.5) * step * jitterVal;
+                        }
+
+                        ctx.beginPath();
+                        if (selectedShape === 'circle') {
+                            ctx.arc(centerX, centerY, radius, 0, Math.PI * 2);
+                            ctx.fill();
+                        } else if (selectedShape === 'square') {
+                            const side = radius * 1.8;
+                            ctx.fillRect(centerX - side/2, centerY - side/2, side, side);
+                        } else if (selectedShape === 'diamond') {
+                            ctx.save();
+                            ctx.translate(centerX, centerY);
+                            ctx.rotate(Math.PI / 4);
+                            const side = radius * 1.6;
+                            ctx.fillRect(-side/2, -side/2, side, side);
+                            ctx.restore();
+                        }
+                    }
+                }
+            }
+
+            const vignVal = parseInt(sliders.vignette.value);
+            if (vignVal > 0) {
+                const radGrad = ctx.createRadialGradient(width/2, height/2, Math.min(width, height) * 0.3, width/2, height/2, Math.max(width, height) * 0.7);
+                radGrad.addColorStop(0, 'rgba(0,0,0,0)');
+                radGrad.addColorStop(1, `rgba(0,0,0,${vignVal / 100})`);
+                ctx.fillStyle = radGrad;
+                ctx.fillRect(0, 0, width, height);
+            }
+        }
+
+        function setDotShape(shape) {
+            selectedShape = shape;
+            ['Circle', 'Square', 'Diamond'].forEach(s => {
+                const btn = document.getElementById(`shape${s}`);
+                if (s.toLowerCase() === shape) {
+                    btn.className = 'py-1 px-2.5 text-[10px] rounded-full bg-[#4a4a4a] border border-gray-400 text-white';
+                } else {
+                    btn.className = 'py-1 px-2.5 text-[10px] rounded-full bg-[#202020] border border-transparent text-gray-400';
+                }
+            });
+            renderEffect();
+        }
+
+        function applyPreset(preset) {
+            resetCanvasFilters();
+            if (preset === 'cyberpunk') {
+                sliders.size.value = 8;
+                document.getElementById('dotColorPicker').value = '#ff007f';
+                document.getElementById('bgColorPicker').value = '#00f0ff';
+            } else if (preset === 'vintage') {
+                document.getElementById('sepiaToggle').checked = true;
+                sliders.vignette.value = 45;
+                sliders.blur.value = 1;
+            } else if (preset === 'noir') {
+                sliders.contrast.value = 2.5;
+                sliders.stippling.value = 90;
+                sliders.posterize.value = 3;
+            }
+            renderEffect();
+        }
+
+        function resetCanvasFilters() {
+            Object.keys(sliders).forEach(key => {
+                const s = sliders[key];
+                if (key === 'size') s.value = 6;
+                else if (key === 'contrast') s.value = 1.2;
+                else if (key === 'stippling') s.value = 75;
+                else if (key === 'noise') s.value = 15;
+                else if (key === 'saturation') s.value = 1;
+                else if (key === 'pixelate') s.value = 1;
+                else if (key === 'posterize') s.value = 16;
+                else s.value = 0;
+
+                const valSpan = document.getElementById(`${key}Val`);
+                if (valSpan) valSpan.innerText = s.value;
+            });
+
+            document.getElementById('invertColors').checked = false;
+            document.getElementById('sepiaToggle').checked = false;
+            document.getElementById('dotColorPicker').value = "#ffffff";
+            document.getElementById('bgColorPicker').value = "#121212";
+
+            flipH = false;
+            flipV = false;
+            cropRatio = 'original';
+            isCompareMode = false;
+
+            setDotShape('circle');
+            renderEffect();
+        }
+
+        function exportImage() {
+            if (!canvas) return;
+            const dataURL = canvas.toDataURL('image/png');
+            const link = document.createElement('a');
+            link.download = 'stipple-export.png';
+            link.href = dataURL;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+
+        function openModal(id) {
+            document.getElementById(id).classList.remove('opacity-0', 'pointer-events-none');
+        }
+
+        function closeModal(id) {
+            document.getElementById(id).classList.add('opacity-0', 'pointer-events-none');
+        }
+
+        function handleContactSubmit(e) {
+            e.preventDefault();
+            const successMsg = document.getElementById('contactSuccess');
+            successMsg.classList.remove('hidden');
+            setTimeout(() => {
+                successMsg.classList.add('hidden');
+                closeModal('contactModal');
+                e.target.reset();
+            }, 1800);
+        }
+    </script>
+</body>
+</html>
